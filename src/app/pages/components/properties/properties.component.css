@@ -1,0 +1,20 @@
+.container {
+    box-sizing: border-box;
+}
+.property-div-content{
+    position: relative;
+}
+.urgent, .featured{
+    padding: 0.05rem;
+    font-weight: bold;
+    color: white;
+}
+.urgent{
+    background-color: orangered;
+}
+.featured{
+    background-color: maroon;
+}
+.property-div-content {
+    position: relative;
+}
