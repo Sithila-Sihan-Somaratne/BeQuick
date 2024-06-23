@@ -1,19 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import bcrypt from 'bcrypt';
 
 interface SignUpResponse {
   message: string;
   status: number
 }
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   hide: boolean = true;
   form!: FormGroup;
@@ -124,4 +127,3 @@ export class HeaderComponent implements OnInit {
   }
 
 }
-
