@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpErrorResponse} from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 interface SignUpResponse {
   message: string;
@@ -12,7 +12,7 @@ interface SignUpResponse {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
