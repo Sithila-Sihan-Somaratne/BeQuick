@@ -1,7 +1,10 @@
 "use strict"
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const signUp = require('./utilities/sign-up');
+console.log(process.env) // remove this after you've confirmed it is working
+
 //Creating an Express application
 const app = express();
 
@@ -12,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 //Routes
-app.use('/sign-up', signUp);
+app.use('', signUp);
 
 // Initializing server
 app.listen(3000, "localhost", () => {

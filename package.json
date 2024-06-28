@@ -26,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "maplibre-gl": "^4.4.1",
     "mock-aws-s3": "^4.0.2",

@@ -68,11 +68,13 @@ export class HeaderComponent implements OnInit {
       };
       this.httpClient.post('http://localhost:3000/sign-up', formWithEncryptedPassword).subscribe(
         (response) => {
+          console.log(response)
           const message = (response as SignUpResponse).message;
           this.appendAlert(message, "success");
           this.signUpSuccess = true;
         },
         (error: HttpErrorResponse) => {
+          console.error(error);
           console.error('Error status:', error.status);
           console.error('Error message:', error.message);
           this.appendAlert(error.message, "danger")

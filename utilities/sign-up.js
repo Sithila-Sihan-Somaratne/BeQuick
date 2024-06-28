@@ -5,7 +5,6 @@ const connection = require('./db/connection');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-
 // Environment variables should be used here
 const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASS;
@@ -13,14 +12,21 @@ const emailPass = process.env.EMAIL_PASS;
 // Configure the email transport using the default SMTP transport and your email account details
 const transporter = nodemailer.createTransport({
     service: 'gmail', // Use your email provider
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: emailUser, // Your email address
         pass: emailPass // Your email password
+    },
+    tls: {
+        rejectUnauthorized: true,
     }
 });
 
 // Sign-up endpoint
 router.post('/sign-up', (req, res) => {
+    console.log("POST executing...");
     const { userName, userEmail, userContact, userPwd } = req.body;
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
@@ -30,11 +36,16 @@ router.post('/sign-up', (req, res) => {
 
     connection.execute(sql, userValues, (err, results) => {
         if (err) {
+            console.error(err);
             console.error('Error while inserting data:', err);
             res.status(500).json({ error: 'Error while inserting data' });
         } else {
+            console.log(results);
             console.log('User created:', results);
-            emailRes = sendEmail(userEmail, userName, verificationPin, (emailError) => {
+            sendEmail(userEmail, userName, verificationPin, (emailError) => {
+                console.log(`User: ${process.env.EMAIL_USER}`);
+                console.log(`Pass: ${process.env.EMAIL_PASS}`);
+
                 if (emailError) {
                     res.status(500).json({ message: 'Something went wrong while sending email' });
                 } else {
@@ -73,7 +84,7 @@ router.post('/verify-pin', (req, res) => {
 });
 let sendEmail = (usrEmail, usrName, verifyPin, callback) => {
     const mailOptions = {
-        from: 'sithi.ss23@gmail.com', // Replace with environment variable
+        from: emailUser,
         to: usrEmail,
         subject: 'Verify Your Account',
         text: `Hello ${usrName},\n\nWelcome to BeQuick!\n\nYour verification PIN is ${verifyPin}. Please enter this PIN to verify your account.\n\nThank you!\n\nSithila Sihan Somaratne, owner of BeQuick`
