@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+fa-icon{
+    color: gray;
+    font-size: 40px;
+    cursor: pointer;
+
+    &.rated, 
+    &:hover, 
+    &:hover ~ fa-icon{
+        color: orange;
+    }
+
+    transition: color 0.3s;
+}

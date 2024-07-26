@@ -1,0 +1,12 @@
+<div class="container text-center">
+    <h1>SHARE YOUR RATING</h1>
+    <br>
+    <p>Give us your rating and tell us the reason for it.</p>
+    <br>
+    <app-star-rating [rating]="0"></app-star-rating>
+    <br><br>
+    <textarea id="review" placeholder="Write your review here"></textarea><br><br>
+    <button class="btn btn-warning" (click)="submitReview()"><b>Submit</b></button><br><br>
+    <div class="reviews" id="reviews"></div>
+</div>
+<br>

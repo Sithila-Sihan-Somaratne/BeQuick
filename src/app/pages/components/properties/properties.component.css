@@ -1,0 +1,35 @@
+.container {
+    box-sizing: border-box;
+}
+.property-div-content{
+    position: relative;
+}
+.urgent, .featured{
+    padding: 0.05rem;
+    font-weight: bold;
+    color: white;
+}
+.urgent{
+    background-color: orangered;
+}
+.featured{
+    background-color: maroon;
+}
+.property-div-content {
+    position: relative;
+}
+.phoneIcon{
+    color: #e62c2c;
+}
+.whatsappIcon{
+    color: #25d366;
+}
+.viberIcon{
+    color: #7360f2;
+}
+.skypeIcon{
+    color: #00aff0;
+}
+.yahooIcon{
+    color: #410093;
+}

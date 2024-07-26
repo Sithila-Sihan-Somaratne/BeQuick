@@ -1,0 +1,241 @@
+<div class="container">
+    <header class="p-3 mb-4 border">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <form class="col-md-12 mb-md-0 mb-lg-0 me-lg-3 d-flex align-items-center" role="search">
+                <input type="search" class="form-control form-control-dark" placeholder="What are you looking for?"
+                    aria-label="Search" style="height: 38px; margin-right: 10px;">
+                <button type="submit" class="btn btn-warning" style="padding: 0 15px; height: 38px;"><fa-icon [icon]="faSearch" class="searchIcon"></fa-icon></button>
+            </form>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="dropdown">
+                <button class="btn btn-ligth dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Sort all results by
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Date: sort by newest to oldest</a></li>
+                    <li><a class="dropdown-item" href="#">Date: sort by oldest to newest</a></li>
+                    <li><a class="dropdown-item" href="#">Prize: sort by cheapest to most expensive</a></li>
+                    <li><a class="dropdown-item" href="#">Prize: sort by most expensive to cheapest</a></li>
+                </ul>
+            </div>
+            <br>
+            <p>Filter ads by: </p>
+            <div class="form-check">
+                <label class="form-check-label" for="Sell">
+                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="">
+                    <span class="urgent">URGENT</span>
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label" for="Rent">
+                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="">
+                    <span class="featured">FEATURED</span>
+                </label>
+            </div>
+            <br>
+            <div class="dropdown">
+                <button class="btn btn-ligth dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Sort type of poster by
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">All</a></li>
+                    <li><a class="dropdown-item" href="#">Members</a></li>
+                    <li><a class="dropdown-item" href="#">Authorized Agents</a></li>
+                    <li><a class="dropdown-item" href="#">Non-members</a></li>
+                </ul>
+            </div>
+            <hr>
+            <p>Choose by category: </p>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/fluency/48/field.png" alt="field" /> Lands</a>
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/color-glass/48/home.png" alt="home" /> Houses</a>
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/color/48/apartment.png" alt="apartment" /> Apartments</a>
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/fluency/48/new-store.png" alt="new-store" /> Commercial
+                    properties</a>
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/fluency/48/room.png" alt="room" /> Room & Annex</a>
+                <a href="#" class="list-group-item list-group-item-action"><img width="24" height="24"
+                        src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-holiday-home-summer-travel-flaticons-lineal-color-flat-icons-4.png"
+                        alt="external-holiday-home-summer-travel-flaticons-lineal-color-flat-icons-4" /> Holiday and
+                    Short Term</a>
+            </div>
+            <hr>
+            <p>Choose option: </p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1 Sell">
+                <label class="form-check-label" for="Sell">
+                    Sell
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2 Rent">
+                <label class="form-check-label" for="Rent">
+                    Rent
+
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2 Buy">
+                <label class="form-check-label" for="Rent">
+                    Buy
+
+                </label>
+            </div>
+        </div>
+        <div class="property-div-container col-md-9">
+            <a href="" class="nav-link px-2 link-dark" style="text-decoration: none;" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop">
+                <div class="row property-div-image border rouded">
+                    <div class="col-md-4">
+                        <br>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfz01qC-wOFb6h-Shjmj-Fnofa5DjgR3x2KdV-a2l66g&s"
+                            alt="House">
+                    </div>
+                    <div id="property-div-content" class="col-md-8">
+                        <br>
+                        <span class="urgent tag">URGENT</span>
+                        <h4><strong>New luxury house in Gonawala, Western(Sri Lanka)</strong></h4>
+                        <p>Bathrooms: 2, Bedrooms: 2</p>
+                        <span>MEMBER &ThinSpace;</span><span>VERIFIED SELLER</span>
+                        <p>House for rent</p>
+                        <span style="color: #1d1987; font-weight: 700;">Rs. 60000.00/month</span>
+                        <p style="text-align: right;">Now</p>
+                    </div>
+                </div>
+                <br>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>New Luxury House in Gonawala</b></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><span style="color: #1d1987; font-weight: 700;">Rs.
+                        60000.00/month</span><i>&ThickSpace;Negotiable</i></p>
+                <p>
+                    Bedrooms : <strong>2</strong> <br>
+                    Bathrooms: <strong>2</strong> <br>
+                    House size: <strong>1,500 sqrt</strong> <br>
+                    Land size: <strong>11 perches</strong> <br>
+                    Location: <strong #propertyLocation id="property_location">Gonawala, Western, Sri Lanka</strong>
+                </p>
+                <br>
+                <b>Description</b>
+                <p>A newly made house since 2 years ago. It has got: </p>
+                <ul>
+                    <li>A living room</li>
+                    <li>A kitchen</li>
+                    <li>A car parking</li>
+                    <li>A small garden</li>
+                    <li>2 bathrooms</li>
+                    <li>2 bedrooms</li>
+                </ul>
+                <p><b>Contacts : </b></p>
+                <ul>
+                    <li>
+                        <h6><fa-icon [icon]="faPhone" class="phoneIcon"></fa-icon> 0123456789</h6>
+                    </li>
+                    <li>
+                        <h6><fa-icon [icon]="faWhatsapp" class="whatsappIcon"></fa-icon> 0192837465</h6>
+                    </li>
+                    <li>
+                        <h6><fa-icon [icon]="faViber" class="viberIcon"></fa-icon> 0246813579</h6>
+                    </li>
+                    <li>
+                        <h6><fa-icon [icon]="faSkype" class="skypeIcon"></fa-icon> 0135792468</h6>
+                    </li>
+                </ul>
+                <p><b>Email : </b></p>
+                <ul>
+                    <li>
+                        <h6><fa-icon [icon]="faMail" class="emailIcon"></fa-icon> bequick&#64;mail.com</h6>
+                    </li>
+                    <li>
+                        <h6><fa-icon [icon]="faYahoo" class="yahooIcon"></fa-icon> bequick&#64;yahoo.com</h6>
+                    </li>
+                </ul>
+                <div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img width="500" height="450"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfz01qC-wOFb6h-Shjmj-Fnofa5DjgR3x2KdV-a2l66g&s"
+                                class="d-block w-100" alt="House">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://cplusdesign.lk/wp-content/uploads/2021/05/Living-Room-Designs-in-Sri-Lanka.jpg"
+                                class="d-block w-100" alt="Living room">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://dminteriors.lk/wp-content/uploads/2019/12/kitchen-interior-design-in-Sri-Lanka.jpg"
+                                class="d-block w-100" alt="Kitchen">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450" src="https://i.ytimg.com/vi/__AMJYpz76g/maxresdefault.jpg"
+                                class="d-block w-100" alt="Bathroom 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://learnhubstorage1.blob.core.windows.net/assets1/bathroom/collection/thumbnail/1603432051051331773967.png"
+                                class="d-block w-100" alt="Bathroom 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/7c/24/a0/hotel-entrance.jpg?w=700&h=-1&s=1"
+                                class="d-block w-100" alt="Car parking">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeYQ5MkeZ2meXz0A48kahn4CLTKKeJ5eSWqjY9DcxjFQ&s"
+                                class="d-block w-100" alt="Bedroom 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQst7Vswh9yZ4XcAlAKMtcmugjRMQm6K1MZ6TZAvr7TkQ&s"
+                                class="d-block w-100" alt="Bedroom 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img width="500" height="450"
+                                src="https://media-cdn.tripadvisor.com/media/photo-s/09/17/eb/1d/green-garden-guest-house.jpg"
+                                class="d-block w-100" alt="Garden">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <br>
+                <button class="btn btn-warning" (click)="searchLocation()"><b>GO TO LOCATION</b></button>
+                <br><br>
+                <div id="map" style="width: 100%; height: 400px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning"><b>Rent it!</b></button>
+            </div>
+        </div>
+    </div>
+</div>

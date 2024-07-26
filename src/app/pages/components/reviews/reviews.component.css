@@ -1,0 +1,29 @@
+.container {
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 800px;
+    align-items: center;
+    justify-content: center;
+}
+.reviews {
+    margin-top: 20px;
+    text-align: left;
+}
+textarea {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 155px;
+}
+.review {
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.review p {
+    margin: 0;
+}
