@@ -21,9 +21,12 @@ export class HeaderComponent implements OnInit {
   hide: boolean = true;
   signUpForm!: FormGroup;
   logInForm!: FormGroup;
-  alertPlaceholder!: HTMLDivElement;
   signUpSuccess: boolean = false;
   logInSuccess: boolean = false;
+  verifyPinForm: any;
+  alertPlaceholder1!: HTMLDivElement;
+  alertPlaceholder2!: HTMLDivElement;
+  alertPlaceholder3!: HTMLDivElement;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder) { }
 
@@ -41,7 +44,12 @@ export class HeaderComponent implements OnInit {
       userName: ['', Validators.required],
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
     });
-    this.alertPlaceholder = document.getElementById('liveAlertPlaceholder') as HTMLDivElement;
+    this.verifyPinForm = this.fb.group({
+      pin: ['', Validators.required]
+    })
+    this.alertPlaceholder1 = document.getElementById('liveAlertPlaceholder1') as HTMLDivElement;
+    this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder2') as HTMLDivElement;
+    this.alertPlaceholder3 = document.getElementById('liveAlertPlaceholder3') as HTMLDivElement;
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -81,16 +89,14 @@ export class HeaderComponent implements OnInit {
       };
       this.httpClient.post('http://localhost:3000/sign-up', formWithEncryptedPassword).subscribe(
         (response) => {
-          console.log(response)
           const message = (response as SignUpAndLogInResponse).message;
-          this.appendAlert(message, "success");
+          this.appendAlert(message, "success", 1);
           this.signUpSuccess = true;
         },
         (error: HttpErrorResponse) => {
-          console.error(error);
           console.error('Error status:', error.status);
           console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger")
+          this.appendAlert(error.message, "danger", 1)
         }
       );
 
@@ -106,16 +112,15 @@ export class HeaderComponent implements OnInit {
       };
       this.httpClient.post('http://localhost:3000/log-in', formWithEncryptedPassword).subscribe(
         (response) => {
-          console.log(response)
           const message = (response as SignUpAndLogInResponse).message;
-          this.appendAlert(message, "success");
+          this.appendAlert(message, "success", 3);
           this.signUpSuccess = true;
         },
         (error: HttpErrorResponse) => {
           console.error(error);
           console.error('Error status:', error.status);
           console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger")
+          this.appendAlert(error.message, "danger", 3)
         }
       );
 
@@ -123,26 +128,27 @@ export class HeaderComponent implements OnInit {
   }
 
   verifyPin(): void {
-    let pin = document.getElementById("pin")?.textContent;
-    console.log(pin);
+    const pin = this.verifyPinForm.get('pin')?.value;
     if (pin) {
-      this.httpClient.post('http://localhost:3000/verify-pin', { userName: this.signUpForm.value.userName, verificationPin: pin }).subscribe(
-        (response) => {
-          // Handle successful verification
-          const message = (response as any).message; // Adjust the type as needed
-          this.appendAlert(message, "success");
-        },
-        (error: HttpErrorResponse) => {
-          // Handle errors, such as incorrect PIN
-          console.error('Error status:', error.status);
-          console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger");
-        }
-      );
+      this.httpClient
+        .post('http://localhost:3000/verify-pin', {
+          userName: this.signUpForm.value.userName,
+          verificationPin: pin,
+        })
+        .subscribe(
+          (response: any) => {
+            this.appendAlert(response.message, 'success', 2);
+          },
+          (error: HttpErrorResponse) => {
+            console.error('Error status:', error.status);
+            console.error('Error message:', error.message);
+            this.appendAlert(error.message, 'danger', 2);
+          }
+        );
     }
   }
 
-  appendAlert = (message: any, type: any): void => {
+  appendAlert = (message: any, type: any, option: number): void => {
     const wrapper = document.createElement('div')
     if (type === 'success') {
       wrapper.innerHTML = [
@@ -159,8 +165,21 @@ export class HeaderComponent implements OnInit {
         '</div>'
       ].join('')
     }
-
-    this.alertPlaceholder.append(wrapper)
+    switch(option) {
+      case 1:
+        this.alertPlaceholder1.append(wrapper);
+        break;
+      case 2:
+        this.alertPlaceholder2.append(wrapper);
+        break;
+      case 3:
+        this.alertPlaceholder3.append(wrapper);
+        break;
+      default:
+        alert("ERROR! SOMETHING WENT WRONG!")
+        break;
+    }
+    
   }
 
 

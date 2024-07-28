@@ -89,6 +89,8 @@
                             </div>
                         </form>
                         <br>
+                        <div id="liveAlertPlaceholder3"></div>
+                        <br>
                         <button class="btn btn-warning w-100 py-2" type="submit">Log in</button>
                         <br><br>
                         <p align="center">Are you new to BeQuick? Go to the Sign Up!</p>
@@ -209,13 +211,24 @@
                                 Fields do not match.
                             </div>
                             <br>
-                            <div id="liveAlertPlaceholder"></div>
+                            <div id="liveAlertPlaceholder1"></div>
                             <br>
-                            <form *ngIf="signUpSuccess" (submit)="verifyPin()">
-                                <input type="tel" class="form-control" id="floatingInput6 pin" placeholder="000000">
-                                <label for="floatingInput6">PIN</label>
-                                <button class="btn btn-warning" type="submit"><b>Verify</b></button>
+                            <form [formGroup]="verifyPinForm" *ngIf="signUpSuccess" (submit)="verifyPin()">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="floatingInput6" placeholder="000000"
+                                        formControlName="pin">
+                                    <label for="floatingInput6">PIN</label>
+                                    <div *ngIf="verifyPinForm.get('pin')?.invalid && (verifyPinForm.get('pin')?.dirty || verifyPinForm.get('pin')?.touched)"
+                                        style="color: red; font-size: 15px; font-weight: 700;">
+                                        <div *ngIf="verifyPinForm.get('pin')?.errors?.['required']">
+                                            PIN is required.
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning" type="submit"><b>Verify</b></button>
+                                </div>
                             </form>
+                            <br>
+                            <div id="liveAlertPlaceholder2"></div>
                             <br>
                             <button class="btn btn-warning w-100 py-2" type="submit"
                                 (click)="signUp()"><b>Signup</b></button>
