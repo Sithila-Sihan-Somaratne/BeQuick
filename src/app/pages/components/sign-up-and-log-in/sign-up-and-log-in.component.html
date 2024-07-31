@@ -1,3 +1,16 @@
+<div class="modal-body">
+    <!-- Tab navigation -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <!-- Post Ad tab will be added here by TypeScript if user is logged in -->
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
+                role="tab" aria-controls="login" aria-selected="true">Log In</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button"
+                role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
+        </li>
+    </ul>
     <!-- Tab content -->
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="login-tab">
@@ -48,11 +61,14 @@
             <br>
             <div id="liveAlertPlaceholder3"></div>
             <br>
-            <button class="btn btn-warning w-100 py-2" type="submit">Log in</button>
+            <button class="btn btn-warning w-100 py-2" type="submit"><b>Log in</b></button>
             <br><br>
             <p align="center">Are you new to BeQuick? Go to the Sign Up!</p>
         </div>
         <div class="tab-pane" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+            <br>
+            <p align="center">Make sure you enter the details correctly!</p>
+            <br>
             <form [formGroup]="signUpForm" method="post">
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingInput1" placeholder="Name Surname"
@@ -66,8 +82,8 @@
                     </div>
                 </div>
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingInput2"
-                        placeholder="name@example.com" formControlName="userEmail">
+                    <input type="email" class="form-control" id="floatingInput2" placeholder="name@example.com"
+                        formControlName="userEmail">
                     <label for="floatingInput2">Email address</label>
                 </div>
                 <div *ngIf="signUpForm.get('userEmail')?.invalid && (signUpForm.get('userEmail')?.dirty || signUpForm.get('userEmail')?.touched)"
@@ -80,8 +96,8 @@
                     </div>
                 </div>
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingInput3"
-                        placeholder="name@example.com" formControlName="confirmEmail">
+                    <input type="email" class="form-control" id="floatingInput3" placeholder="name@example.com"
+                        formControlName="confirmEmail">
                     <label for="floatingInput3">Please enter email address again</label>
                 </div>
                 <div *ngIf="signUpForm.get('confirmEmail')?.invalid && (signUpForm.get('confirmEmail')?.dirty || signUpForm.get('confirmEmail')?.touched)"
@@ -187,10 +203,10 @@
                 <br>
                 <div id="liveAlertPlaceholder2"></div>
                 <br>
-                <button class="btn btn-warning w-100 py-2" type="submit"
-                    (click)="signUp()"><b>Signup</b></button>
+                <button class="btn btn-warning w-100 py-2" type="submit" (click)="signUp()"><b>Sign Up</b></button>
                 <br>
             </form>
         </div>
     </div>
     <!-- Post Ad content will be added here by TypeScript if user is logged in -->
+</div>

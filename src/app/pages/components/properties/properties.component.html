@@ -4,7 +4,8 @@
             <form class="col-md-12 mb-md-0 mb-lg-0 me-lg-3 d-flex align-items-center" role="search">
                 <input type="search" class="form-control form-control-dark" placeholder="What are you looking for?"
                     aria-label="Search" style="height: 38px; margin-right: 10px;">
-                <button type="submit" class="btn btn-warning" style="padding: 0 15px; height: 38px;"><fa-icon [icon]="faSearch" class="searchIcon"></fa-icon></button>
+                <button type="submit" class="btn btn-warning" style="padding: 0 15px; height: 38px;"><fa-icon
+                        [icon]="faSearch" class="searchIcon"></fa-icon></button>
             </form>
         </div>
     </header>
@@ -102,12 +103,13 @@
                     </div>
                     <div id="property-div-content" class="col-md-8">
                         <br>
-                        <span class="urgent tag">URGENT</span>
+                        <span class="urgent tag" style="text-align: right;">URGENT</span>
                         <h4><strong>New luxury house in Gonawala, Western(Sri Lanka)</strong></h4>
                         <p>Bathrooms: 2, Bedrooms: 2</p>
                         <span>MEMBER &ThinSpace;</span><span>VERIFIED SELLER</span>
                         <p>House for rent</p>
-                        <span style="color: #1d1987; font-weight: 700;">Rs. 60000.00/month</span>
+                        <span style="color: #1d1987; font-weight: 700;">Rs. 60000.00/month</span><br><br>
+                        <fa-icon id="starIcon" [icon]="faStar"></fa-icon>
                         <p style="text-align: right;">Now</p>
                     </div>
                 </div>
@@ -126,6 +128,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <p>
+                    Star it:
+                    <fa-icon id="starIcon" class="starIcon" [class.rated]="rating >= 1" [icon]="faStar"
+                        (click)="setRating(1)" (mouseover)="setRating(1)"></fa-icon>
+                </p>
                 <p><span style="color: #1d1987; font-weight: 700;">Rs.
                         60000.00/month</span><i>&ThickSpace;Negotiable</i></p>
                 <p>
@@ -229,9 +236,10 @@
                     </button>
                 </div>
                 <br>
-                <button class="btn btn-warning" (click)="searchLocation()"><b>GO TO LOCATION</b></button>
-                <br><br>
-                <div id="map" style="width: 100%; height: 400px;"></div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31682.788635599547!2d79.9304057060921!3d6.968140653005761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae257e95d1ebc6b%3A0x60db8bbbbda3b93d!2sGonawala%2C%20Sri%20Lanka!5e0!3m2!1sen!2sit!4v1722453355055!5m2!1sen!2sit"
+                    width="700" height="450" style="border: 1px solid black; display: block; margin: 0 auto;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning"><b>Rent it!</b></button>

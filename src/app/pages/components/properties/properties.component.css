@@ -18,6 +18,16 @@
 .property-div-content {
     position: relative;
 }
+.starIcon{
+    color: gray;
+    cursor: pointer;
+
+    &.rated, 
+    &:hover, 
+    &:hover ~ fa-icon{
+        color: orange;
+    }
+}
 .phoneIcon{
     color: #e62c2c;
 }

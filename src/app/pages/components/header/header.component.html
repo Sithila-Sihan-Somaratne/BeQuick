@@ -13,36 +13,21 @@
 
         <div class="col-md-4 text-end">
             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                data-bs-target="#multiPurposeModal"><b>POST
-                    YOUR AD</b></button>
+                data-bs-target="#multiPurposeModal1"><b>POST YOUR AD</b></button>
         </div>
     </header>
 </div>
 
 <!-- Multi-purpose Modal -->
-<div class="modal fade" id="multiPurposeModal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="multiPurposeModalLabel" aria-hidden="true">
+<div class="modal fade" id="multiPurposeModal1" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="multiPurposeModal1Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5><b>POST YOUR AD</b></h5>
+                <h5><b>POST YOUR AD!</b></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- Tab navigation -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <!-- Post Ad tab will be added here by TypeScript if user is logged in -->
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
-                            type="button" role="tab" aria-controls="login" aria-selected="true">Log In</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup"
-                            type="button" role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
-                    </li>
-                </ul>
-                <app-sign-up-and-log-in></app-sign-up-and-log-in>
-            </div>
+            <app-sign-up-and-log-in></app-sign-up-and-log-in>
         </div>
     </div>
 </div>

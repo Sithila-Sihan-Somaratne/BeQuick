@@ -1,39 +1,33 @@
 <div class="px-4 py-5 my-5 text-center">
     <h1 class="display-5 fw-bold text-body-emphasis">Who are we?</h1>
     <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Natus at unde laboriosam voluptates asperiores quae iure cum explicabo rerum? <br> Porro iusto numquam laborum veniam at quibusdam suscipit, a vitae voluptas? <br> Lorem ipsum dolor sit amet, consectetur adipisicing elit. <br> Odio accusamus, ducimus autem odit cum id adipisci vel ipsa doloremque fuga tempora! <br> Asperiores iusto impedit hic sunt aperiam vero quas eum? <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Vero, assumenda cum ducimus quibusdam ipsam nisi magni ut soluta esse cumque error voluptas optio sunt vitae obcaecati accusamus suscipit, atque modi. <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Magni ipsam laudantium voluptas ex hic pariatur quisquam minus id, earum consectetur fugit nisi facere deleniti sunt necessitatibus quam corporis tenetur deserunt.</p>
+        <p class="lead mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Natus at unde laboriosam
+            voluptates asperiores quae iure cum explicabo rerum? <br> Porro iusto numquam laborum veniam at quibusdam
+            suscipit, a vitae voluptas? <br> Lorem ipsum dolor sit amet, consectetur adipisicing elit. <br> Odio
+            accusamus, ducimus autem odit cum id adipisci vel ipsa doloremque fuga tempora! <br> Asperiores iusto
+            impedit hic sunt aperiam vero quas eum? <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>
+            Vero, assumenda cum ducimus quibusdam ipsam nisi magni ut soluta esse cumque error voluptas optio sunt vitae
+            obcaecati accusamus suscipit, atque modi. <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>
+            Magni ipsam laudantium voluptas ex hic pariatur quisquam minus id, earum consectetur fugit nisi facere
+            deleniti sunt necessitatibus quam corporis tenetur deserunt.</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
             <button type="button" class="btn btn-warning btn-lg px-4 gap-3" data-bs-toggle="modal"
-                data-bs-target="#SignUpAndLogIn"><b>GET STARTED</b></button>
+                data-bs-target="#multiPurposeModal2"><b>GET STARTED</b></button>
             <button type="button" class="btn btn-outline-secondary btn-lg px-4" routerLink="learn-more"><b><a
                         class="nav-link light-link" href="learn-more">Learn more</a></b></button>
         </div>
     </div>
 </div>
 <!-- Multi-purpose Modal -->
-<div class="modal fade" id="SignUpAndLogIn" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="multiPurposeModalLabel" aria-hidden="true">
+<div class="modal fade" id="multiPurposeModal2" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="multiPurposeModal2Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5><b>LOG IN AND SIGN UP TAB</b></h5>
+                <h5 id="aboutModalTitle"><b>LOG IN OR SIGN UP</b></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- Tab navigation -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <!-- Post Ad tab will be added here by TypeScript if user is logged in -->
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
-                            type="button" role="tab" aria-controls="login" aria-selected="true">Log In</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup"
-                            type="button" role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
-                    </li>
-                </ul>
-                <app-sign-up-and-log-in></app-sign-up-and-log-in>
-            </div>
+            <app-sign-up-and-log-in></app-sign-up-and-log-in>
         </div>
     </div>
 </div>
