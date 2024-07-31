@@ -34,4 +34,4 @@ This is a project inspired by [Ikman](https://ikman.lk/) and I was doing this to
 
 ##NOTE
 
-There will be another or some project/s regarding the same argument(BeQuick) with other frameworks.
+There will be another or some project/s regarding the same argument(BeQuick) with another name + other frameworks.
