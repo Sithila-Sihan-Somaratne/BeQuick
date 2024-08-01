@@ -7,7 +7,6 @@ import { ContactsComponent } from './pages/components/contacts/contacts.componen
 import { ReviewsComponent } from './pages/components/reviews/reviews.component';
 import { LearnMoreComponent } from './pages/components/learn-more/learn-more.component';
 import { StarRatingComponent } from './pages/components/reviews/star-rating/star-rating.component';
-import { SignUpANDlogInComponent } from './pages/components/sign-up-and-log-in/sign-up-and-log-in.component';
 import { SignUpComponent } from './pages/components/sign-up/sign-up.component';
 import { LogInComponent } from './pages/components/log-in/log-in.component';
 
