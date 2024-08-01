@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('./db/connection');
-const crypto = require('crypto');
+const crypto = require('crypto-js');
 const nodemailer = require('nodemailer');
 
 // Environment variables should be used here
