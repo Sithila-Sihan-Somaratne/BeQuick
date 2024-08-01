@@ -27,7 +27,30 @@
                 <h5 id="aboutModalTitle"><b>LOG IN OR SIGN UP</b></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <app-sign-up-and-log-in></app-sign-up-and-log-in>
+            <div class="modal-body">
+                <!-- Tab navigation -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <!-- Post Ad tab will be added here by TypeScript if user is logged in -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#logIn" type="button"
+                            role="tab" aria-controls="login" aria-selected="true">Log In</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signUp" type="button"
+                            role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
+                    </li>
+                </ul>
+                <!-- Tab content -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane active" id="logIn" role="tabpanel" aria-labelledby="login-tab">
+                        <app-log-in></app-log-in>
+                    </div>
+                    <div class="tab-pane" id="signUp" role="tabpanel" aria-labelledby="signup-tab">
+                        <app-sign-up></app-sign-up>
+                    </div>
+                </div>
+                <!-- Post Ad content will be added here by TypeScript if user is logged in -->
+            </div>
         </div>
     </div>
 </div>

@@ -1,32 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpErrorResponse, HttpClientModule} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
 
-interface SignUpAndLogInResponse {
+interface SignUpResponse {
   message: string;
   status: number
 }
-
 @Component({
-  selector: 'app-sign-up-and-log-in',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
-  templateUrl: './sign-up-and-log-in.component.html',
-  styleUrl: './sign-up-and-log-in.component.css'
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.css'
 })
-
-export class SignUpANDlogInComponent implements OnInit {
+export class SignUpComponent implements OnInit {
   hide: boolean = true;
   signUpForm!: FormGroup;
   logInForm!: FormGroup;
   signUpSuccess: boolean = false;
-  logInSuccess: boolean = false;
   verifyPinForm: any;
   alertPlaceholder1!: HTMLDivElement;
   alertPlaceholder2!: HTMLDivElement;
-  alertPlaceholder3!: HTMLDivElement;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder) { }
 
@@ -40,16 +36,11 @@ export class SignUpANDlogInComponent implements OnInit {
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
     }, { validators: this.fieldsMatchValidator('userEmail', 'confirmEmail', 'userContact', 'confirmContact', 'userPwd', 'confirmPwd') });
-    this.logInForm = this.fb.group({
-      userName: ['', Validators.required],
-      userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-    });
     this.verifyPinForm = this.fb.group({
       pin: ['', Validators.required]
     })
     this.alertPlaceholder1 = document.getElementById('liveAlertPlaceholder1') as HTMLDivElement;
     this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder2') as HTMLDivElement;
-    this.alertPlaceholder3 = document.getElementById('liveAlertPlaceholder3') as HTMLDivElement;
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -89,7 +80,7 @@ export class SignUpANDlogInComponent implements OnInit {
       };
       this.httpClient.post('http://localhost:3000/sign-up', formWithEncryptedPassword).subscribe(
         (response) => {
-          const message = (response as SignUpAndLogInResponse).message;
+          const message = (response as SignUpResponse).message;
           this.appendAlert(message, "success", 1);
           this.signUpSuccess = true;
         },
@@ -112,7 +103,7 @@ export class SignUpANDlogInComponent implements OnInit {
       };
       this.httpClient.post('http://localhost:3000/log-in', formWithEncryptedPassword).subscribe(
         (response) => {
-          const message = (response as SignUpAndLogInResponse).message;
+          const message = (response as SignUpResponse).message;
           this.appendAlert(message, "success", 3);
           this.signUpSuccess = true;
         },
@@ -165,22 +156,17 @@ export class SignUpANDlogInComponent implements OnInit {
         '</div>'
       ].join('')
     }
-    switch(option) {
+    switch (option) {
       case 1:
         this.alertPlaceholder1.append(wrapper);
         break;
       case 2:
         this.alertPlaceholder2.append(wrapper);
         break;
-      case 3:
-        this.alertPlaceholder3.append(wrapper);
-        break;
       default:
         alert("ERROR! SOMETHING WENT WRONG!")
         break;
     }
-    
+
   }
-
-
 }

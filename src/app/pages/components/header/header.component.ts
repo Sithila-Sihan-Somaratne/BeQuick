@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { SignUpANDlogInComponent } from '../sign-up-and-log-in/sign-up-and-log-in.component';
+import { SignUpComponent } from '../sign-up/sign-up.component';
+import { LogInComponent } from '../log-in/log-in.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [SignUpANDlogInComponent],
+  imports: [SignUpComponent, LogInComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
