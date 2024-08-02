@@ -32,6 +32,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 This is a project inspired by [Ikman](https://ikman.lk/) and I was doing this to get more experience on how to create one.
 
-##NOTE
+## NOTE
 
 There will be another or some project/s regarding the same argument(BeQuick) with another name + other frameworks.
