@@ -54,10 +54,7 @@ export class LogInComponent implements OnInit{
           this.logInSuccess = true;
         },
         (error: HttpErrorResponse) => {
-          console.error(error);
-          console.error('Error status:', error.status);
-          console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger", 1)
+          this.appendAlert(error.error.message, "danger", 1)
         }
       );
 

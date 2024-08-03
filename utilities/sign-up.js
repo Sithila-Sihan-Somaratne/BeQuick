@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('./db/connection');
-const crypto = require('crypto-js');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
 // Environment variables should be used here
@@ -26,26 +26,22 @@ const transporter = nodemailer.createTransport({
 
 // Sign-up endpoint
 router.post('/sign-up', (req, res) => {
-    console.log("POST executing...");
-    const { userName, userEmail, userContact, userPwd } = req.body;
+    const { userName, userEmail, userContact, userDOB, userPwd, bankName, bankAccountNumber, bankSWIFT } = req.body;
+    if (!userName || !userEmail || !userContact || !userDOB || !userDOB || !bankName || !bankAccountNumber || !bankSWIFT) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
 
-    const sql = 'INSERT INTO users (userName, userEmail, userContact, userPwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?)';
-    const userValues = [userName, userEmail, userContact, userPwd, verificationPin, isVerified];
+    const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, bankName, bankAccountNumber, bankSWIFT, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const userValues = [userName, userEmail, userContact, userDOB, userPwd, verificationPin, bankName, bankAccountNumber, bankSWIFT, isVerified];
 
-    connection.execute(sql, userValues, (err, results) => {
+    connection.execute(sql, userValues, (err, _results) => {
         if (err) {
-            console.error(err);
-            console.error('Error while inserting data:', err);
             res.status(500).json({ error: 'Error while inserting data' });
         } else {
-            console.log(results);
-            console.log('User created:', results);
             sendEmail(userEmail, userName, verificationPin, (emailError) => {
-                console.log(`User: ${process.env.EMAIL_USER}`);
-                console.log(`Pass: ${process.env.EMAIL_PASS}`);
-
                 if (emailError) {
                     res.status(500).json({ message: 'Something went wrong while sending email' });
                 } else {
@@ -55,19 +51,20 @@ router.post('/sign-up', (req, res) => {
         }
     });
 });
-//Verify PIN
-router.post('/verify-pin', (req, res) => {
-    const { userName, verificationPin } = req.body;
-    const sql = 'SELECT * FROM users WHERE userName = ? AND verificationPin = ?';
 
-    connection.query(sql, [userName, verificationPin], (err, results) => {
+// Verify PIN
+router.post('/verify-pin', (req, res) => {
+    const { name, verificationPin } = req.body;
+    const sql = 'SELECT * FROM users WHERE name = ? AND verificationPin = ?';
+
+    connection.query(sql, [name, verificationPin], (err, results) => {
         if (err) {
             console.error('Error while verifying PIN:', err);
             res.status(500).json({ error: 'Error while verifying PIN' });
         } else if (results.length > 0) {
             // PIN is correct, update the isVerified field for the user
-            const updateSql = 'UPDATE users SET isVerified = 1 WHERE userName = ?';
-            connection.query(updateSql, [userName], (updateErr, updateResults) => {
+            const updateSql = 'UPDATE users SET isVerified = 1 WHERE name = ?';
+            connection.query(updateSql, [name], (updateErr, updateResults) => {
                 if (updateErr) {
                     console.error('Error while updating verification status:', updateErr);
                     res.status(500).json({ error: 'Error while updating verification status' });
@@ -82,6 +79,7 @@ router.post('/verify-pin', (req, res) => {
         }
     });
 });
+
 let sendEmail = (usrEmail, usrName, verifyPin, callback) => {
     const mailOptions = {
         from: emailUser,
@@ -92,7 +90,7 @@ let sendEmail = (usrEmail, usrName, verifyPin, callback) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.error('Error sending email:', error);
+            console.error('Error while sending email:', error);
             callback(error, null);
         } else {
             console.log('Email sent:', info.response);

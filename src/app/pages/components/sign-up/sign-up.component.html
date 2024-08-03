@@ -28,23 +28,9 @@
         </div>
     </div>
     <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput3" placeholder="name@example.com"
-            formControlName="confirmEmail">
-        <label for="floatingInput3">Please enter email address again</label>
-    </div>
-    <div *ngIf="signUpForm.get('confirmEmail')?.invalid && (signUpForm.get('confirmEmail')?.dirty || signUpForm.get('confirmEmail')?.touched)"
-        style="color: red; font-size: 15px; font-weight: 700;">
-        <div *ngIf="signUpForm.get('confirmEmail')?.errors?.['required']">
-            Email is required.
-        </div>
-        <div *ngIf="signUpForm.get('confirmEmail')?.errors?.['email']">
-            Please enter a valid email.
-        </div>
-    </div>
-    <div class="form-floating">
-        <input type="tel" class="form-control" id="floatingInput4" placeholder="+00 000 000 000"
+        <input type="tel" class="form-control" id="floatingInput3" placeholder="+00 000 000 000"
             formControlName="userContact">
-        <label for="floatingInput4">Contact Number</label>
+        <label for="floatingInput3">Contact Number</label>
     </div>
     <div *ngIf="signUpForm.get('userContact')?.invalid && (signUpForm.get('userContact')?.dirty || signUpForm.get('userContact')?.touched)"
         style="color: red; font-size: 15px; font-weight: 700;">
@@ -53,14 +39,16 @@
         </div>
     </div>
     <div class="form-floating">
-        <input type="tel" class="form-control" id="floatingInput5" placeholder="+00 000 000 000"
-            formControlName="confirmContact">
-        <label for="floatingInput5">Please enter contact number again</label>
+        <input type="text" class="form-control" id="floatingInputDOB" placeholder="DD/MM/YY" formControlName="userDOB">
+        <label for="floatingInputDOB">Date of Birth</label>
     </div>
-    <div *ngIf="signUpForm.get('confirmContact')?.invalid && (signUpForm.get('confirmContact')?.dirty || signUpForm.get('confirmContact')?.touched)"
+    <div *ngIf="signUpForm.get('userDOB')?.invalid && (signUpForm.get('userDOB')?.dirty || signUpForm.get('userDOB')?.touched)"
         style="color: red; font-size: 15px; font-weight: 700;">
-        <div *ngIf="signUpForm.get('confirmContact')?.errors?.['required']">
-            Contact number is required.
+        <div *ngIf="signUpForm.get('userDOB')?.errors?.['required']">
+            Date of Birth is required.
+        </div>
+        <div *ngIf="signUpForm.get('userDOB')?.errors?.['pattern']">
+            Please enter a valid date in DD/MM/YY format.
         </div>
     </div>
     <div class="form-floating">
@@ -109,17 +97,49 @@
             </label>
         </div>
     </div>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput6" placeholder="Bank Name" formControlName="bankName">
+        <label for="floatingInput6">Bank Name</label>
+    </div>
+    <div *ngIf="signUpForm.get('bankName')?.invalid && (signUpForm.get('bankName')?.dirty || signUpForm.get('bankName')?.touched)"
+        style="color: red; font-size: 15px; font-weight: 700;">
+        <div *ngIf="signUpForm.get('bankName')?.errors?.['required']">
+            Bank name is required.
+        </div>
+    </div>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput7" placeholder="Bank Account Number"
+            formControlName="bankAccountNumber">
+        <label for="floatingInput7">Bank Account Number</label>
+    </div>
+    <div *ngIf="signUpForm.get('bankAccountNumber')?.invalid && (signUpForm.get('bankAccountNumber')?.dirty || signUpForm.get('bankAccountNumber')?.touched)"
+        style="color: red; font-size: 15px; font-weight: 700;">
+        <div *ngIf="signUpForm.get('bankAccountNumber')?.errors?.['required']">
+            Bank Account Number is required.
+        </div>
+    </div>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput8" placeholder="Bank SWIFT Code"
+            formControlName="bankSWIFT">
+        <label for="floatingInput8">Bank SWIFT Code</label>
+    </div>
+    <div *ngIf="signUpForm.get('bankSWIFT')?.invalid && (signUpForm.get('bankSWIFT')?.dirty || signUpForm.get('bankSWIFT')?.touched)"
+        style="color: red; font-size: 15px; font-weight: 700;">
+        <div *ngIf="signUpForm.get('bankSWIFT')?.errors?.['required']">
+            Bank SWIFT is required.
+        </div>
+    </div>
     <br>
     <div *ngIf="signUpForm.errors?.['fieldsDoNotMatch']" style="color: red; font-size: 15px; font-weight: 700;">
-        Fields do not match.
+        Password fields do not match.
     </div>
     <br>
     <div id="liveAlertPlaceholder1"></div>
     <br>
     <form [formGroup]="verifyPinForm" *ngIf="signUpSuccess" (submit)="verifyPin()">
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput6" placeholder="000000" formControlName="pin">
-            <label for="floatingInput6">PIN</label>
+            <input type="text" class="form-control" id="floatingInput9" placeholder="000000" formControlName="pin">
+            <label for="floatingInput9">PIN</label>
             <div *ngIf="verifyPinForm.get('pin')?.invalid && (verifyPinForm.get('pin')?.dirty || verifyPinForm.get('pin')?.touched)"
                 style="color: red; font-size: 15px; font-weight: 700;">
                 <div *ngIf="verifyPinForm.get('pin')?.errors?.['required']">

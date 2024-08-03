@@ -30,18 +30,21 @@ export class SignUpComponent implements OnInit {
     this.signUpForm = this.fb.group({
       userName: ['', Validators.required],
       userEmail: ['', [Validators.required, Validators.email]],
-      confirmEmail: ['', [Validators.required, Validators.email]],
       userContact: ['', Validators.required],
-      confirmContact: ['', Validators.required],
+      userDOB: ['', [Validators.required, Validators.pattern('^\\d{2}/\\d{2}/\\d{2}$')]],
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
-    }, { validators: this.fieldsMatchValidator('userEmail', 'confirmEmail', 'userContact', 'confirmContact', 'userPwd', 'confirmPwd') });
+      confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
+      bankName: ['', Validators.required],
+      bankAccountNumber: ['', Validators.required],
+      bankSWIFT: ['', Validators.required]
+    }, { validators: this.fieldsMatchValidator('userPwd', 'confirmPwd') });
     this.verifyPinForm = this.fb.group({
       pin: ['', Validators.required]
-    })
+    });
     this.alertPlaceholder1 = document.getElementById('liveAlertPlaceholder1') as HTMLDivElement;
     this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder2') as HTMLDivElement;
   }
+
 
   passwordStrengthValidator(): ValidatorFn {
     return Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\W_])[A-Za-z\\d\\W_].{8,}$');
@@ -76,6 +79,7 @@ export class SignUpComponent implements OnInit {
       const encryptedPassword = this.encryptPassword(this.signUpForm.value.userPwd);
       const formWithEncryptedPassword = {
         ...this.signUpForm.value,
+        confirmPwd: "",
         userPwd: encryptedPassword
       };
       this.httpClient.post('http://localhost:3000/sign-up', formWithEncryptedPassword).subscribe(
@@ -85,33 +89,7 @@ export class SignUpComponent implements OnInit {
           this.signUpSuccess = true;
         },
         (error: HttpErrorResponse) => {
-          console.error('Error status:', error.status);
-          console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger", 1)
-        }
-      );
-
-    }
-  }
-
-  logIn(): void {
-    if (this.logInForm.valid) {
-      const encryptedPassword = this.encryptPassword(this.logInForm.value.userPwd);
-      const formWithEncryptedPassword = {
-        ...this.logInForm.value,
-        userPwd: encryptedPassword
-      };
-      this.httpClient.post('http://localhost:3000/log-in', formWithEncryptedPassword).subscribe(
-        (response) => {
-          const message = (response as SignUpResponse).message;
-          this.appendAlert(message, "success", 3);
-          this.signUpSuccess = true;
-        },
-        (error: HttpErrorResponse) => {
-          console.error(error);
-          console.error('Error status:', error.status);
-          console.error('Error message:', error.message);
-          this.appendAlert(error.message, "danger", 3)
+          this.appendAlert(error.error.message, "danger", 1)
         }
       );
 
@@ -131,9 +109,7 @@ export class SignUpComponent implements OnInit {
             this.appendAlert(response.message, 'success', 2);
           },
           (error: HttpErrorResponse) => {
-            console.error('Error status:', error.status);
-            console.error('Error message:', error.message);
-            this.appendAlert(error.message, 'danger', 2);
+            this.appendAlert(error.error.message, 'danger', 2);
           }
         );
     }
