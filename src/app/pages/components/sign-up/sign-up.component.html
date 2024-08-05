@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInputDOB" placeholder="DD/MM/YY" formControlName="userDOB">
+        <input type="date" class="form-control" id="floatingInputDOB" placeholder="DD/MM/YYYY" formControlName="userDOB">
         <label for="floatingInputDOB">Date of Birth</label>
     </div>
     <div *ngIf="signUpForm.get('userDOB')?.invalid && (signUpForm.get('userDOB')?.dirty || signUpForm.get('userDOB')?.touched)"
@@ -47,8 +47,8 @@
         <div *ngIf="signUpForm.get('userDOB')?.errors?.['required']">
             Date of Birth is required.
         </div>
-        <div *ngIf="signUpForm.get('userDOB')?.errors?.['pattern']">
-            Please enter a valid date in DD/MM/YY format.
+        <div *ngIf="signUpForm.get('userDOB')?.errors?.['minimumAge']">
+            You have to be at least 18 years old to sign up in BeQuick.
         </div>
     </div>
     <div class="form-floating">

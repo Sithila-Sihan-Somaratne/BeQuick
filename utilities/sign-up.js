@@ -54,17 +54,18 @@ router.post('/sign-up', (req, res) => {
 
 // Verify PIN
 router.post('/verify-pin', (req, res) => {
-    const { name, verificationPin } = req.body;
+    const { userName ,verificationPin } = req.body;
     const sql = 'SELECT * FROM users WHERE name = ? AND verificationPin = ?';
-
-    connection.query(sql, [name, verificationPin], (err, results) => {
+    connection.query(sql, [userName, verificationPin], (err, results) => {
+        console.log(sql, userName, verificationPin);
+        console.log(results.length);
         if (err) {
             console.error('Error while verifying PIN:', err);
             res.status(500).json({ error: 'Error while verifying PIN' });
         } else if (results.length > 0) {
             // PIN is correct, update the isVerified field for the user
             const updateSql = 'UPDATE users SET isVerified = 1 WHERE name = ?';
-            connection.query(updateSql, [name], (updateErr, updateResults) => {
+            connection.query(updateSql, [userName], (updateErr, updateResults) => {
                 if (updateErr) {
                     console.error('Error while updating verification status:', updateErr);
                     res.status(500).json({ error: 'Error while updating verification status' });
@@ -75,7 +76,7 @@ router.post('/verify-pin', (req, res) => {
             });
         } else {
             // PIN is incorrect
-            res.status(401).json({ message: 'Incorrect PIN' });
+            res.status(401).json({ message: 'Incorrect PIN. Make sure you first copy and paste in the field from the email we sent you.' });
         }
     });
 });

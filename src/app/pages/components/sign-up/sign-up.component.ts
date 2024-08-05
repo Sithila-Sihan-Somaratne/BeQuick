@@ -1,19 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
 
 interface SignUpResponse {
   message: string;
   status: number
 }
+
 @Component({
   selector: 'app-sign-up',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css'
+  styleUrl: './sign-up.component.css',
+  providers: [DatePipe]
 })
 export class SignUpComponent implements OnInit {
   hide: boolean = true;
@@ -24,14 +26,14 @@ export class SignUpComponent implements OnInit {
   alertPlaceholder1!: HTMLDivElement;
   alertPlaceholder2!: HTMLDivElement;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder) { }
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.signUpForm = this.fb.group({
       userName: ['', Validators.required],
       userEmail: ['', [Validators.required, Validators.email]],
       userContact: ['', Validators.required],
-      userDOB: ['', [Validators.required, Validators.pattern('^\\d{2}/\\d{2}/\\d{2}$')]],
+      userDOB: ['', [Validators.required, minimumAgeValidator(18)]],
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       bankName: ['', Validators.required],
@@ -45,6 +47,9 @@ export class SignUpComponent implements OnInit {
     this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder2') as HTMLDivElement;
   }
 
+  formatDate(date: Date): string {
+    return this.datePipe.transform(date, 'yyyy/MM/dd') || '';
+  }
 
   passwordStrengthValidator(): ValidatorFn {
     return Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\W_])[A-Za-z\\d\\W_].{8,}$');
@@ -76,13 +81,14 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     if (this.signUpForm.valid) {
-      const encryptedPassword = this.encryptPassword(this.signUpForm.value.userPwd);
-      const formWithEncryptedPassword = {
+      const formattedDOB = this.datePipe.transform(this.signUpForm.value.userDOB, 'yyyy-MM-dd');
+      const formWithFormattedDOB = {
         ...this.signUpForm.value,
+        userDOB: formattedDOB,
         confirmPwd: "",
-        userPwd: encryptedPassword
+        userPwd: this.encryptPassword(this.signUpForm.value.userPwd)
       };
-      this.httpClient.post('http://localhost:3000/sign-up', formWithEncryptedPassword).subscribe(
+      this.httpClient.post('http://localhost:3000/sign-up', formWithFormattedDOB).subscribe(
         (response) => {
           const message = (response as SignUpResponse).message;
           this.appendAlert(message, "success", 1);
@@ -92,7 +98,6 @@ export class SignUpComponent implements OnInit {
           this.appendAlert(error.error.message, "danger", 1)
         }
       );
-
     }
   }
 
@@ -143,6 +148,20 @@ export class SignUpComponent implements OnInit {
         alert("ERROR! SOMETHING WENT WRONG!")
         break;
     }
-
   }
+}
+
+export function minimumAgeValidator(minAge: number) {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const birthDate = new Date(control.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= minAge ? null : { 'minimumAge': { value: minAge } };
+  };
 }
