@@ -44,6 +44,44 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="login-tab">
                         <app-log-in></app-log-in>
+                        <br>
+                        <div id="liveAlertPlaceholder4"></div>
+                        <br>
+                        <p align="center"><button class="btn btn-warning"
+                                (click)="openForgotPasswordModalHeader()"><b>Forgot Password?</b></button></p>
+                        <!-- Forgot Password Modal -->
+                        <div class="modal fade" id="forgotPasswordModalHeader" tabindex="-1"
+                            aria-labelledby="forgotPasswordModalLabelHeader" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="forgotPasswordModalLabelHeader">Forgot Password
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword()">
+                                            <div class="mb-3">
+                                                <label for="emailHeader" class="form-label">Email address</label>
+                                                <input type="email" class="form-control" id="emailHeader"
+                                                    formControlName="email">
+                                                <div *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)"
+                                                    style="color: red; font-size: 15px; font-weight: 700;">
+                                                    <div *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">
+                                                        Email is required.
+                                                    </div>
+                                                    <div *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">
+                                                        Please enter a valid email.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-warning"><b>Sumbit</b></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="signup" role="tabpanel" aria-labelledby="signup-tab">
                         <app-sign-up></app-sign-up>

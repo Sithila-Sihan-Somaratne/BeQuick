@@ -28,25 +28,3 @@
 <button class="btn btn-warning w-100 py-2" type="submit" (click)="logIn()"><b>Log in</b></button>
 <br><br>
 <p align="center">Are you new to BeQuick? Go to the Sign Up!</p>
-<p align="center"><a href="#" (click)="openForgotPasswordModal()">Forgot Password?</a></p>
-
-<!-- Forgot Password Modal -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword()">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" formControlName="email" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>

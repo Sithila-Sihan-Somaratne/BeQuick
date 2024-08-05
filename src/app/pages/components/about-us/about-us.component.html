@@ -32,18 +32,56 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <!-- Post Ad tab will be added here by TypeScript if user is logged in -->
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#logIn" type="button"
-                            role="tab" aria-controls="login" aria-selected="true">Log In</button>
+                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#logIn"
+                            type="button" role="tab" aria-controls="login" aria-selected="true">Log In</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signUp" type="button"
-                            role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
+                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signUp"
+                            type="button" role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
                     </li>
                 </ul>
                 <!-- Tab content -->
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane active" id="logIn" role="tabpanel" aria-labelledby="login-tab">
                         <app-log-in></app-log-in>
+                        <br>
+                        <div id="liveAlertPlaceholder4"></div>
+                        <br>
+                        <p align="center"><button class="btn btn-warning"
+                                (click)="openForgotPasswordModalAboutUs()"><b>Forgot Password?</b></button></p>
+                        <!-- Forgot Password Modal -->
+                        <div class="modal fade" id="forgotPasswordModalAboutUs" tabindex="-1"
+                            aria-labelledby="forgotPasswordModalLabelAboutUs" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="forgotPasswordModalLabelAboutUs">Forgot Password
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword()">
+                                            <div class="mb-3">
+                                                <label for="emailAboutUs" class="form-label">Email address</label>
+                                                <input type="email" class="form-control" id="emailAboutUs"
+                                                    formControlName="email">
+                                                <div *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)"
+                                                    style="color: red; font-size: 15px; font-weight: 700;">
+                                                    <div *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">
+                                                        Email is required.
+                                                    </div>
+                                                    <div *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">
+                                                        Please enter a valid email.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-warning"><b>Sumbit</b></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="signUp" role="tabpanel" aria-labelledby="signup-tab">
                         <app-sign-up></app-sign-up>

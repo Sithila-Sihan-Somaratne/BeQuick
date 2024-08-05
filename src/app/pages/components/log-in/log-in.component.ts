@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
-import * as bs from 'bootstrap';
 
 interface LogInResponse {
   message: string;
@@ -22,7 +21,6 @@ export class LogInComponent implements OnInit{
   hide: boolean = true;
   logInSuccess: boolean = false;
   alertPlaceholder!: HTMLDivElement;
-  forgotPasswordForm!: any;
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder) { }
 
@@ -30,9 +28,6 @@ export class LogInComponent implements OnInit{
     this.logInForm = this.fb.group({
       userName: ['', Validators.required],
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-    });
-    this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
     });
     this.alertPlaceholder = document.getElementById('liveAlertPlaceholder3') as HTMLDivElement;
   }
@@ -69,22 +64,6 @@ export class LogInComponent implements OnInit{
 
     }
   }
-  forgotPassword(): void {
-    if (this.forgotPasswordForm.valid) {
-      this.httpClient.post('http://localhost:3000/forgot-password', this.forgotPasswordForm.value).subscribe(
-        (response: any) => {
-          this.appendAlert(response.message, "success", 1);
-        },
-        (error: HttpErrorResponse) => {
-          this.appendAlert(error.error.message, "danger", 1);
-        }
-      );
-    }
-  }
-  openForgotPasswordModal(): void {
-    const forgotPasswordModal = new bs.Modal(document.getElementById('forgotPasswordModal')!); // Use the alias here
-    forgotPasswordModal.show();
-  }
   appendAlert = (message: any, type: any, option: number): void => {
     const wrapper = document.createElement('div')
     if (type === 'success') {
@@ -113,6 +92,3 @@ export class LogInComponent implements OnInit{
 
   }
 }
-
-
-export namespace bootstrap{}
