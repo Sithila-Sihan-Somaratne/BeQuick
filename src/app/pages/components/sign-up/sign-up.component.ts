@@ -14,8 +14,7 @@ interface SignUpResponse {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css',
-  providers: [DatePipe]
+  styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent implements OnInit {
   hide: boolean = true;
@@ -26,7 +25,7 @@ export class SignUpComponent implements OnInit {
   alertPlaceholder1!: HTMLDivElement;
   alertPlaceholder2!: HTMLDivElement;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private datePipe: DatePipe) {}
+  constructor(private httpClient: HttpClient, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.signUpForm = this.fb.group({
@@ -35,20 +34,13 @@ export class SignUpComponent implements OnInit {
       userContact: ['', Validators.required],
       userDOB: ['', [Validators.required, minimumAgeValidator(18)]],
       userPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      bankName: ['', Validators.required],
-      bankAccountNumber: ['', Validators.required],
-      bankSWIFT: ['', Validators.required]
+      confirmPwd: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
     }, { validators: this.fieldsMatchValidator('userPwd', 'confirmPwd') });
     this.verifyPinForm = this.fb.group({
       pin: ['', Validators.required]
     });
     this.alertPlaceholder1 = document.getElementById('liveAlertPlaceholder1') as HTMLDivElement;
     this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder2') as HTMLDivElement;
-  }
-
-  formatDate(date: Date): string {
-    return this.datePipe.transform(date, 'yyyy/MM/dd') || '';
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -81,10 +73,8 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     if (this.signUpForm.valid) {
-      const formattedDOB = this.datePipe.transform(this.signUpForm.value.userDOB, 'yyyy-MM-dd');
       const formWithFormattedDOB = {
         ...this.signUpForm.value,
-        userDOB: formattedDOB,
         confirmPwd: "",
         userPwd: this.encryptPassword(this.signUpForm.value.userPwd)
       };

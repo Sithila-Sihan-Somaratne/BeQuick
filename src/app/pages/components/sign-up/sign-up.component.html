@@ -97,38 +97,6 @@
             </label>
         </div>
     </div>
-    <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput6" placeholder="Bank Name" formControlName="bankName">
-        <label for="floatingInput6">Bank Name</label>
-    </div>
-    <div *ngIf="signUpForm.get('bankName')?.invalid && (signUpForm.get('bankName')?.dirty || signUpForm.get('bankName')?.touched)"
-        style="color: red; font-size: 15px; font-weight: 700;">
-        <div *ngIf="signUpForm.get('bankName')?.errors?.['required']">
-            Bank name is required.
-        </div>
-    </div>
-    <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput7" placeholder="Bank Account Number"
-            formControlName="bankAccountNumber">
-        <label for="floatingInput7">Bank Account Number</label>
-    </div>
-    <div *ngIf="signUpForm.get('bankAccountNumber')?.invalid && (signUpForm.get('bankAccountNumber')?.dirty || signUpForm.get('bankAccountNumber')?.touched)"
-        style="color: red; font-size: 15px; font-weight: 700;">
-        <div *ngIf="signUpForm.get('bankAccountNumber')?.errors?.['required']">
-            Bank Account Number is required.
-        </div>
-    </div>
-    <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput8" placeholder="Bank SWIFT Code"
-            formControlName="bankSWIFT">
-        <label for="floatingInput8">Bank SWIFT Code</label>
-    </div>
-    <div *ngIf="signUpForm.get('bankSWIFT')?.invalid && (signUpForm.get('bankSWIFT')?.dirty || signUpForm.get('bankSWIFT')?.touched)"
-        style="color: red; font-size: 15px; font-weight: 700;">
-        <div *ngIf="signUpForm.get('bankSWIFT')?.errors?.['required']">
-            Bank SWIFT is required.
-        </div>
-    </div>
     <br>
     <div *ngIf="signUpForm.errors?.['fieldsDoNotMatch']" style="color: red; font-size: 15px; font-weight: 700;">
         Password fields do not match.

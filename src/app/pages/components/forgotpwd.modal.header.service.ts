@@ -4,7 +4,7 @@ import * as bootstrap from 'bootstrap';
 @Injectable({
   providedIn: 'root'
 })
-export class ModalServiceHeader {
+export class ForgotPwdModalServiceHeader {
   openForgotPasswordModal(): void {
     const modalElement = document.getElementById('forgotPasswordModalHeader')!;
     const modalOptions: bootstrap.Modal.Options = {

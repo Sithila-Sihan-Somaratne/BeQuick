@@ -4,9 +4,9 @@ import * as bootstrap from 'bootstrap';
 @Injectable({
   providedIn: 'root'
 })
-export class ModalServiceAboutUs {
-  openForgotPasswordModal(): void {
-    const modalElement = document.getElementById('forgotPasswordModalAboutUs')!;
+export class ResetPwdModalServiceAboutUS {
+  openResetPasswordModal(): void {
+    const modalElement = document.getElementById('resetPasswordModalAboutUs')!;
     const modalOptions: bootstrap.Modal.Options = {
       backdrop: 'static',
       keyboard: false,
