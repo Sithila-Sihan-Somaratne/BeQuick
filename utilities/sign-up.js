@@ -34,12 +34,13 @@ router.post('/sign-up', (req, res) => {
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
 
-    const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?)';
     const userValues = [userName, userEmail, userContact, userDOB, userPwd, verificationPin, isVerified];
 
     connection.execute(sql, userValues, (err, _results) => {
         if (err) {
-            res.status(500).json({ error: 'Error while inserting data' });
+            console.error(err);
+            return res.status(500).json({ error: 'Error while inserting data' });
         } else {
             sendEmail(userEmail, userName, verificationPin, (emailError) => {
                 if (emailError) {
