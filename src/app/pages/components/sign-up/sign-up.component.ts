@@ -1,8 +1,9 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import * as bcrypt from 'bcryptjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 interface SignUpResponse {
   message: string;
@@ -12,11 +13,12 @@ interface SignUpResponse {
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, FontAwesomeModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent implements OnInit {
+  faSignUp = faUserPlus 
   hide: boolean = true;
   signUpForm!: FormGroup;
   logInForm!: FormGroup;
@@ -64,28 +66,17 @@ export class SignUpComponent implements OnInit {
     };
   }
 
-  encryptPassword(password: string): string {
-    const saltRounds = 12;
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(password, salt);
-    return hash;
-  }
-
   signUp(): void {
     if (this.signUpForm.valid) {
-      const formWithFormattedDOB = {
-        ...this.signUpForm.value,
-        confirmPwd: "",
-        userPwd: this.encryptPassword(this.signUpForm.value.userPwd)
-      };
-      this.httpClient.post('http://localhost:3000/sign-up', formWithFormattedDOB).subscribe(
+      const formData = this.signUpForm.value;
+      this.httpClient.post('http://localhost:3000/sign-up', formData).subscribe(
         (response) => {
           const message = (response as SignUpResponse).message;
           this.appendAlert(message, "success", 1);
           this.signUpSuccess = true;
         },
         (error: HttpErrorResponse) => {
-          this.appendAlert(error.error.message, "danger", 1)
+          this.appendAlert(error.message, "danger", 1)
         }
       );
     }

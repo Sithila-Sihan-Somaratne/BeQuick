@@ -10,6 +10,14 @@ const bcrypt = require('bcryptjs');
 const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASS;
 
+//Encrypt password method
+function encryptPassword (password) {
+    const saltRounds = 12;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(password, salt);
+    return hash;
+}
+
 // Log-in endpoint
 router.post('/log-in', (req, res) => {
     const { userName, userPwd } = req.body;
@@ -21,7 +29,7 @@ router.post('/log-in', (req, res) => {
             return res.status(500).json({ error: 'Oops! Something went wrong! Please try again later.' });
         } else {
             if (results.length === 0) {
-                return res.status(400).json({ message: 'Username or password doesn\'t match!' });
+                return res.status(400).json({ message: `Username doesn't exist! You may sign up or try again.` });
             } else {
                 const user = results[0];
                 const now = new Date();
@@ -29,8 +37,6 @@ router.post('/log-in', (req, res) => {
                 if (user.lock_until && now < new Date(user.lock_until)) {
                     return res.status(400).json({ message: `Account locked. Try again later. Account will be unlocked at ${user.lock_until}`});
                 } else {
-                    console.log(user.pwd);
-                    console.log(userPwd);
                     if (bcrypt.compareSync(userPwd, user.pwd)) {
                         connection.execute('UPDATE users SET failed_attempts = 0, lock_until = NULL WHERE name = ?', [userName]);
                         return res.status(200).json({ message: 'You successfully logged in!' });
@@ -44,7 +50,7 @@ router.post('/log-in', (req, res) => {
                         }
 
                         connection.execute('UPDATE users SET failed_attempts = ?, lock_until = ? WHERE name = ?', [failedAttempts, lockUntil, userName]);
-                        return res.status(400).json({ message: `Username or password doesn't match! ${5 - failedAttempts} attempts remaining!` });
+                        return res.status(400).json({ message: `Password doesn't match! ${5 - failedAttempts} attempts remaining!` });
                     }
                 }
             }
@@ -110,7 +116,7 @@ router.post('/reset-password/:token', (req, res) => {
                 return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
             } else {
                 const user = results[0];
-                connection.execute('UPDATE users SET pwd = ?, reset_password_token = NULL, reset_password_expires = NULL WHERE email = ?', [newPassword, user.email], (err) => {
+                connection.execute('UPDATE users SET pwd = ?, reset_password_token = NULL, reset_password_expires = NULL WHERE email = ?', [encryptPassword(newPassword), user.email], (err) => {
                     if (err) {
                         console.error('Error while resetting password: ', err);
                         return res.status(500).json({ error: 'Oops! Something went wrong! Please try again later.' });

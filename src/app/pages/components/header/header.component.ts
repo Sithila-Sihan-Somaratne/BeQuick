@@ -4,8 +4,8 @@ import { LogInComponent } from '../log-in/log-in.component';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
-import { ForgotPwdModalServiceHeader } from '../forgotpwd.modal.header.service';
-import { ResetPwdModalServiceHeader } from '../resetpwd.modal.header.service';
+import { ForgotPwdModalService } from '../forgotpwd.modal.service';
+import { ResetPwdModalService } from '../resetpwd.modal.service';
 import { CommonModule } from '@angular/common';
 
 interface PurposeResponse {
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   alertPlaceholder1!: any;
   alertPlaceholder2!: any;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private modalService1: ForgotPwdModalServiceHeader, private modalService2: ResetPwdModalServiceHeader) { }
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private modalService1: ForgotPwdModalService, private modalService2: ResetPwdModalService) { }
 
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
@@ -70,13 +70,14 @@ export class HeaderComponent implements OnInit {
     const hash = bcrypt.hashSync(password, salt);
     return hash;
   }
+
   forgotPassword(): void {
     if (this.forgotPasswordForm.valid) {
       this.httpClient.post('http://localhost:3000/forgot-password', this.forgotPasswordForm.value).subscribe(
         (response: any) => {
           this.appendAlert(response.message, "success", 1);            
           setTimeout(() => {
-            this.openResetPasswordModalHeader();
+            this.openResetPasswordModal();
           }, 15000);
         },
         (error: HttpErrorResponse) => {
@@ -85,6 +86,7 @@ export class HeaderComponent implements OnInit {
       );
     }
   }
+
   resetPassword(): void {
     if (this.resetPasswordForm.valid) {
       const { resetToken, newPassword, confirmPassword } = this.resetPasswordForm.value;
@@ -104,12 +106,15 @@ export class HeaderComponent implements OnInit {
       );
     }
   }
-  openForgotPasswordModalHeader(): void {
+
+  openForgotPasswordModal(): void {
     this.modalService1.openForgotPasswordModal();
   }
-  openResetPasswordModalHeader(): void {
+
+  openResetPasswordModal(): void {
     this.modalService2.openResetPasswordModal();
   }
+
   appendAlert = (message: any, type: any, option: number): void => {
     const wrapper = document.createElement('div')
     if (type === 'success') {
@@ -138,6 +143,6 @@ export class HeaderComponent implements OnInit {
         alert("ERROR! SOMETHING WENT WRONG!")
         break;
     }
-
   }
+  
 }

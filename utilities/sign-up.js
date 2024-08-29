@@ -4,6 +4,7 @@ const router = express.Router();
 const connection = require('./db/connection');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcryptjs');
 
 // Environment variables should be used here
 const emailUser = process.env.EMAIL_USER;
@@ -24,18 +25,27 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+//Encrypt password method
+function encryptPassword (password) {
+    const saltRounds = 12;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(password, salt);
+    return hash;
+}
+
 // Sign-up endpoint
 router.post('/sign-up', (req, res) => {
     const { userName, userEmail, userContact, userDOB, userPwd} = req.body;
-    if (!userName || !userEmail || !userContact || !userDOB || !userDOB ) {
+    if (!userName || !userEmail || !userContact || !userDOB || !userPwd ) {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
+    const encryptedPwd = encryptPassword(userPwd);
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
 
     const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const userValues = [userName, userEmail, userContact, userDOB, userPwd, verificationPin, isVerified];
+    const userValues = [userName, userEmail, userContact, userDOB, encryptedPwd, verificationPin, isVerified];
 
     connection.execute(sql, userValues, (err, _results) => {
         if (err) {

@@ -1,20 +1,22 @@
 <div class="container-fluid" style="padding: 0;">
-    <header id="header"
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
-        style="background-color: #1d1987; padding: 5px;">
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-light"><b><u>BeQuick</u></b></a></li>
-            <li><a routerLink="/about" href="/about" class="nav-link px-2 link-light">About us</a></li>
-            <li><a routerLink="/contacts" href="/contacts" class="nav-link px-2 link-light">Contacts</a></li>
-            <li><a routerLink="/reviews" href="/reviews" class="nav-link px-2 link-light">Reviews</a></li>
-            <li><a routerLink="/learn-more" href="/learn-more" class="nav-link px-2 link-light">Learn more about
-                    BeQuick</a></li>
-        </ul>
+    <header id="header">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #1d1987; padding: 5px;">
+            <div class="container-fluid">
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 link-light"><b><u>BeQuick</u></b></a></li>
+                    <li><a routerLink="/about" href="/about" class="nav-link px-2 link-light">About us</a></li>
+                    <li><a routerLink="/contacts" href="/contacts" class="nav-link px-2 link-light">Contacts</a></li>
+                    <li><a routerLink="/reviews" href="/reviews" class="nav-link px-2 link-light">Reviews</a></li>
+                    <li><a routerLink="/learn-more" href="/learn-more" class="nav-link px-2 link-light">Learn more about
+                            BeQuick</a></li>
+                </ul>
 
-        <div class="col-md-4 text-end">
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                data-bs-target="#multiPurposeModal1"><b>POST YOUR AD</b></button>
-        </div>
+                <div class="col-md-4 text-end justify-content-center">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#multiPurposeModal1"><b>LOG IN</b></button>
+                </div>
+            </div>
+        </nav>
     </header>
 </div>
 
@@ -24,7 +26,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5><b>POST YOUR AD!</b></h5>
+                <h5><b>LOG IN OR SIGN UP</b></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -45,14 +47,14 @@
                     <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="login-tab">
                         <app-log-in></app-log-in>
                         <p align="center"><button class="btn btn-warning"
-                                (click)="openForgotPasswordModalHeader()"><b>Forgot Password?</b></button></p>
+                                (click)="openForgotPasswordModal()"><b>Forgot Password?</b></button></p>
                         <!-- Forgot Password Modal -->
-                        <div class="modal fade" id="forgotPasswordModalHeader" tabindex="-1"
-                            aria-labelledby="forgotPasswordModalLabelHeader" aria-hidden="true">
+                        <div class="modal fade" id="forgotPasswordModal" tabindex="-1"
+                            aria-labelledby="forgotPasswordModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="forgotPasswordModalLabelHeader">Forgot Password
+                                        <h5 class="modal-title" id="forgotPasswordModal">Forgot Password
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
@@ -83,8 +85,8 @@
                             </div>
                         </div>
                         <!-- Reset Password Modal -->
-                        <div class="modal fade" id="resetPasswordModalHeader" tabindex="-1"
-                            aria-labelledby="resetPasswordModalLabelHeader" aria-hidden="true">
+                        <div class="modal fade" id="resetPasswordModal" tabindex="-1"
+                            aria-labelledby="resetPasswordModalLabelr" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -180,7 +182,6 @@
                         <app-sign-up></app-sign-up>
                     </div>
                 </div>
-                <!-- Post Ad content will be added here by TypeScript if user is logged in -->
             </div>
         </div>
     </div>

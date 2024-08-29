@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import * as bcrypt from 'bcryptjs';
 
 interface LogInResponse {
@@ -12,11 +14,12 @@ interface LogInResponse {
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, FontAwesomeModule],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.css'
 })
 export class LogInComponent implements OnInit{
+  faLogIn = faRightFromBracket
   logInForm!: FormGroup;
   hide: boolean = true;
   logInSuccess: boolean = false;
@@ -42,12 +45,8 @@ export class LogInComponent implements OnInit{
   }
   logIn(): void {
     if (this.logInForm.valid) {
-      const encryptedPassword = this.encryptPassword(this.logInForm.value.userPwd);
-      const formWithEncryptedPassword = {
-        ...this.logInForm.value,
-        userPwd: encryptedPassword
-      };
-      this.httpClient.post('http://localhost:3000/log-in', formWithEncryptedPassword).subscribe(
+      const formData = this.logInForm.value;
+      this.httpClient.post('http://localhost:3000/log-in', formData).subscribe(
         (response) => {
           const message = (response as LogInResponse).message;
           this.appendAlert(message, "success", 1);
