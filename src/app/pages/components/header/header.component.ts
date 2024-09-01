@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
   resetPasswordForm!: FormGroup;
   alertPlaceholder1!: any;
   alertPlaceholder2!: any;
+  isLoggedIn: boolean = false; // Replace with your actual logic
 
   constructor(private httpClient: HttpClient, private fb: FormBuilder, private modalService1: ForgotPwdModalService, private modalService2: ResetPwdModalService) { }
 
@@ -41,6 +42,9 @@ export class HeaderComponent implements OnInit {
     }, { validators: this.fieldsMatchValidator('newPassword', 'confirmPassword') });
     this.alertPlaceholder1 = document.getElementById("liveAlertPlaceholder4") as HTMLDivElement;
     this.alertPlaceholder2 = document.getElementById("liveAlertPlaceholder5") as HTMLDivElement;
+
+    // Replace with your actual logic to check if the user is logged in
+    this.isLoggedIn = false;
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -144,5 +148,9 @@ export class HeaderComponent implements OnInit {
         break;
     }
   }
-  
+
+  logout(): void {
+    // Your logout logic here
+    this.isLoggedIn = false;
+  }
 }
