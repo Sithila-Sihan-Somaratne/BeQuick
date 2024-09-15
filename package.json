@@ -26,6 +26,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@mapbox/node-pre-gyp": "^1.0.11",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "aws-sdk": "^2.1646.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",

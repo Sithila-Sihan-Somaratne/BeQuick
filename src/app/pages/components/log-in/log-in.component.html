@@ -1,20 +1,20 @@
 <br>
-<h1 align="center">LOG IN  <fa-icon [icon]="faLogIn" class="logInIcon"></fa-icon></h1>
-<p align="center">First, you must login!</p>
+<h1 class="text-center">LOG IN  <fa-icon [icon]="faLogIn" class="logInIcon"></fa-icon></h1>
+<p class="text-center">First, you must login!</p>
 <br>
 <form [formGroup]="logInForm" method="post">
-    <div class="form-floating">
+    <div class="form-floating mb-3">
         <input type="text" class="form-control" id="floatingInput1" placeholder="Name Surname" formControlName="userName">
         <label for="floatingInput1">User name</label>
     </div>
-    <div *ngIf="logInForm.get('userName')?.invalid && (logInForm.get('userName')?.dirty || logInForm.get('userName')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
+    <div *ngIf="logInForm.get('userName')?.invalid && (logInForm.get('userName')?.dirty || logInForm.get('userName')?.touched)" class="text-danger fw-bold" style="font-size: 15px;">
         <div *ngIf="logInForm.get('userName')?.errors?.['required']">User name is required.</div>
     </div>
-    <div class="form-floating">
+    <div class="form-floating mb-3">
         <input [type]="hide ? 'password' : 'text'" class="form-control" id="floatingPassword1" placeholder="Password" formControlName="userPwd">
         <label for="floatingPassword1">Password</label>
     </div>
-    <div *ngIf="logInForm.get('userPwd')?.invalid && (logInForm.get('userPwd')?.dirty || logInForm.get('userPwd')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
+    <div *ngIf="logInForm.get('userPwd')?.invalid && (logInForm.get('userPwd')?.dirty || logInForm.get('userPwd')?.touched)" class="text-danger fw-bold" style="font-size: 15px;">
         <div *ngIf="logInForm.get('userPwd')?.errors?.['required']">Password is required.</div>
         <div *ngIf="logInForm.get('userPwd')?.errors?.['minlength']">Password must be at least 8 characters long.</div>
         <div *ngIf="logInForm.get('userPwd')?.errors?.['pattern']">Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.</div>
@@ -29,4 +29,4 @@
 <br>
 <button class="btn btn-warning w-100 py-2" type="submit" (click)="logIn()"><b>Log in</b></button>
 <br><br>
-<p align="center">Are you new to BeQuick? Go to the Sign Up!</p>
+<p class="text-center">Are you new to BeQuick? Go to the Sign Up!</p>

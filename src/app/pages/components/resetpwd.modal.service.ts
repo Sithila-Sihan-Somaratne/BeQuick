@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import * as bootstrap from 'bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HeaderComponent } from './header/header.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResetPwdModalService {
+  constructor(private modalService: NgbModal) {}
+
   openResetPasswordModal(): void {
-    const modalElement = document.getElementById('resetPasswordModal')!;
-    const modalOptions: bootstrap.Modal.Options = {
+    const modalRef = this.modalService.open(HeaderComponent, {
       backdrop: 'static',
       keyboard: false,
-      focus: false
-    };
-    new bootstrap.Modal(modalElement, modalOptions).show();
+      centered: true
+    });
   }
 }
