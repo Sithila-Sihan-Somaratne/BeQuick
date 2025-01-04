@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   resetPasswordForm!: FormGroup;
   isLoggedIn: boolean = false;
   active: number = 1;
+  userProfile: any = {};
 
   constructor(
     private httpClient: HttpClient,
@@ -49,7 +50,22 @@ export class HeaderComponent implements OnInit {
     }, { validators: this.fieldsMatchValidator('newPassword', 'confirmPassword') });
     this.authService.isLoggedIn.subscribe(loggedIn => {
       this.isLoggedIn = loggedIn;
+      if (this.isLoggedIn) {
+        this.loadUserProfile();
+      }
     });
+  }
+
+  loadUserProfile(): void {
+    const userName = 'exampleUserName'; // Replace with logic to get the logged-in user's name
+    this.httpClient.get(`/profile/${userName}`).subscribe(
+      (data: any) => {
+        this.userProfile = data;
+      },
+      error => {
+        console.error('Error fetching user profile:', error);
+      }
+    );
   }
 
   passwordStrengthValidator(): ValidatorFn {

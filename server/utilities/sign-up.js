@@ -35,21 +35,18 @@ function encryptPassword (password) {
 
 // Sign-up endpoint
 router.post('/sign-up', (req, res) => {
-    const { userName, userEmail, userContact, userDOB, userPwd} = req.body;
-    if (!userName || !userEmail || !userContact || !userDOB || !userPwd ) {
+    const { userName, userEmail, userContact, userDOB, userPwd } = req.body;
+    if (!userName || !userEmail || !userContact || !userDOB || !userPwd) {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
     const encryptedPwd = encryptPassword(userPwd);
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
+    const defaultProfileImage = 'default_profile_image_url.jpg'; // Replace with actual URL
 
-    console.log("Register password: "+userPwd);
-    console.log("Encrypted above pwd: "+encryptedPwd);
-    
-    
-    const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const userValues = [userName, userEmail, userContact, userDOB, encryptedPwd, verificationPin, isVerified];
+    const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified, profileImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const userValues = [userName, userEmail, userContact, userDOB, encryptedPwd, verificationPin, isVerified, defaultProfileImage];
 
     connection.execute(sql, userValues, (err, _results) => {
         if (err) {

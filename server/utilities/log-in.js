@@ -1,10 +1,12 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
 const connection = require('./db/connection');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
+router.use(bodyParser.json()); 
 
 // Environment variables should be used here
 const emailUser = process.env.EMAIL_USER;
@@ -12,42 +14,36 @@ const emailPass = process.env.EMAIL_PASS;
 
 // Log-in endpoint
 router.post('/log-in', (req, res) => {
-    const { userName, userPwd } = req.body;
-    const sql = 'SELECT * FROM users WHERE name = ?';
+    const { loginInput, userPwd } = req.body;
 
-    connection.execute(sql, [userName], (err, results) => {
+    // Check if loginInput and userPwd are provided
+    if (!loginInput || !userPwd) {
+        return res.status(400).json({ error: 'Both login input and password are required' });
+    }
+
+    // Determine if the input is an email, username, or contact number
+    let sql;
+    if (loginInput.includes('@')) {
+        sql = 'SELECT * FROM users WHERE email = ?';
+    } else if (!isNaN(loginInput)) {
+        sql = 'SELECT * FROM users WHERE contactNumber = ?';
+    } else {
+        sql = 'SELECT * FROM users WHERE name = ?';
+    }
+
+    connection.execute(sql, [loginInput], (err, results) => {
         if (err) {
-            console.error('Error while logging: ', err);
+            console.error('Error while logging in:', err);
             return res.status(500).json({ error: 'Oops! Something went wrong! Please try again later.' });
         } else {
             if (results.length === 0) {
-                return res.status(400).json({ message: `Username doesn't exist! You may sign up or try again.` });
+                return res.status(400).json({ message: `Account doesn't exist! You may sign up or try again.` });
             } else {
                 const user = results[0];
-                console.log(results);
-                const now = new Date();
-
-                if (user.lock_until && now < new Date(user.lock_until)) {
-                    return res.status(400).json({ message: `Account locked. Try again later. Account will be unlocked at ${user.lock_until}`});
+                if (bcrypt.compareSync(userPwd, user.pwd)) {
+                    return res.status(200).json({ message: 'You successfully logged in!' });
                 } else {
-                    console.log("Entered pwd: "+userPwd);
-                    console.log("Database pwd: "+user.pwd)
-                    
-                    if (bcrypt.compareSync(userPwd, user.pwd)) {
-                        connection.execute('UPDATE users SET failed_attempts = 0, lock_until = NULL WHERE name = ?', [userName]);
-                        return res.status(200).json({ message: 'You successfully logged in!' });
-                    }
-                     else {
-                        let failedAttempts = user.failed_attempts + 1;
-                        let lockUntil = null;
-
-                        if (failedAttempts >= 5) {
-                            lockUntil = new Date(now.getTime() + 5 * 60000); // 5 minutes lock
-                        }
-
-                        connection.execute('UPDATE users SET failed_attempts = ?, lock_until = ? WHERE name = ?', [failedAttempts, lockUntil, userName]);
-                        return res.status(400).json({ message: `Password doesn't match! ${5 - failedAttempts} attempts remaining!` });
-                    }
+                    return res.status(400).json({ message: `Password doesn't match!` });
                 }
             }
         }
