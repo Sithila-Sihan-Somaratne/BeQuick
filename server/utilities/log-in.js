@@ -10,14 +10,6 @@ const bcrypt = require('bcryptjs');
 const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASS;
 
-//Encrypt password method
-function encryptPassword (password) {
-    const saltRounds = 12;
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(password, salt);
-    return hash;
-}
-
 // Log-in endpoint
 router.post('/log-in', (req, res) => {
     const { userName, userPwd } = req.body;
@@ -32,11 +24,15 @@ router.post('/log-in', (req, res) => {
                 return res.status(400).json({ message: `Username doesn't exist! You may sign up or try again.` });
             } else {
                 const user = results[0];
+                console.log(results);
                 const now = new Date();
 
                 if (user.lock_until && now < new Date(user.lock_until)) {
                     return res.status(400).json({ message: `Account locked. Try again later. Account will be unlocked at ${user.lock_until}`});
                 } else {
+                    console.log("Entered pwd: "+userPwd);
+                    console.log("Database pwd: "+user.pwd)
+                    
                     if (bcrypt.compareSync(userPwd, user.pwd)) {
                         connection.execute('UPDATE users SET failed_attempts = 0, lock_until = NULL WHERE name = ?', [userName]);
                         return res.status(200).json({ message: 'You successfully logged in!' });
@@ -87,7 +83,7 @@ router.post('/forgot-password', (req, res) => {
                 to: email,
                 from: emailUser,
                 subject: 'Password Reset',
-                text: `Hello.\nYou are receiving this because you (or someone else) have requested the reset of the password for your account.\nYour password reset token is: ${token}\nIf you did not request this, please ignore this email and your password will remain unchanged.\nIf you have request wait for a modal to appear to insert token and reset you passrord. Note that the token expires within 1 hour.\n\nThank you for reading the instructions.\nBeQuick Company.`
+                text: `Hello.\nYou are receiving this because you (or someone else) have requested the reset of the password for your account.\nYour password reset token is: ${token}\nIf you did not request this, please ignore this email and your password will remain unchanged.\nIf you have request wait for a modal to appear for 20 seconds to insert token and reset you passrord. Note that the token expires within 1 hour.\n\nThank you for reading the instructions.\nBeQuick Company.`
             };
 
             transporter.sendMail(mailOptions, (err) => {
@@ -112,6 +108,7 @@ router.post('/reset-password/:token', (req, res) => {
             console.error('Error while verifying token: ', err);
             return res.status(500).json({ error: 'Oops! Something went wrong! Please try again later.' });
         } else {
+            console.log(results.length);
             if (results.length === 0) {
                 return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
             } else {

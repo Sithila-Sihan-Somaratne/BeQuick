@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SignUpComponent } from '../sign-up/sign-up.component';
 import { LogInComponent } from '../log-in/log-in.component';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
-import { ForgotPwdModalService } from '../forgotpwd.modal.service';
-import { ResetPwdModalService } from '../resetpwd.modal.service';
 import { CommonModule } from '@angular/common';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbNavModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../../services/auth.service';
 
 interface PurposeResponse {
   message: string;
@@ -17,26 +16,28 @@ interface PurposeResponse {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, SignUpComponent, LogInComponent, ReactiveFormsModule, HttpClientModule, NgbNavModule],
+  imports: [CommonModule, SignUpComponent, LogInComponent, ReactiveFormsModule, HttpClientModule, NgbNavModule, NgbDropdownModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('resetPasswordModal') resetPasswordModal: any;
+  @ViewChild('liveAlertPlaceholder4', { static: false }) alertPlaceholder1!: ElementRef<HTMLDivElement>;
+  @ViewChild('liveAlertPlaceholder5', { static: false }) alertPlaceholder2!: ElementRef<HTMLDivElement>;
   hide: boolean = true;
   forgotPasswordForm!: FormGroup;
   resetPasswordForm!: FormGroup;
-  alertPlaceholder1!: HTMLDivElement;
-  alertPlaceholder2!: HTMLDivElement;
   isLoggedIn: boolean = false;
   active: number = 1;
 
   constructor(
     private httpClient: HttpClient,
     private fb: FormBuilder,
-    private modalService1: ForgotPwdModalService,
-    private modalService2: ResetPwdModalService
+    private modalService1: NgbModal,
+    private modalService2: NgbModal,
+    private authService: AuthService 
   ) {}
-
+  
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -46,10 +47,9 @@ export class HeaderComponent implements OnInit {
       newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
     }, { validators: this.fieldsMatchValidator('newPassword', 'confirmPassword') });
-    this.alertPlaceholder1 = document.getElementById('liveAlertPlaceholder4') as HTMLDivElement;
-    this.alertPlaceholder2 = document.getElementById('liveAlertPlaceholder5') as HTMLDivElement;
-
-    this.isLoggedIn = false;
+    this.authService.isLoggedIn.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    });
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -86,7 +86,7 @@ export class HeaderComponent implements OnInit {
           this.appendAlert(response.message, 'success', 1);
           setTimeout(() => {
             this.openResetPasswordModal();
-          }, 15000);
+          }, 20000);
         },
         (error: HttpErrorResponse) => {
           this.appendAlert(error.error.message, 'danger', 1);
@@ -103,7 +103,7 @@ export class HeaderComponent implements OnInit {
         return;
       }
       const encryptedPassword = this.encryptPassword(newPassword);
-      this.httpClient.post(`http://localhost:3000/reset-password/${resetToken}`, { newPassword: encryptedPassword, confirmPassword: '' }).subscribe(
+      this.httpClient.post(`http://localhost:3000/reset-password/${resetToken}`, { newPassword: encryptedPassword }).subscribe(
         (response) => {
           const message = (response as PurposeResponse).message;
           this.appendAlert(message, 'success', 2);
@@ -115,12 +115,16 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openForgotPasswordModal(): void {
-    this.modalService1.openForgotPasswordModal();
+  openMultiPurposeModal(content: any) {
+    this.modalService1.open(content, { backdrop: 'static' });
+  }
+
+  openForgotPasswordModal(content: any): void {
+    this.modalService1.open(content, { backdrop: 'static' });
   }
 
   openResetPasswordModal(): void {
-    this.modalService2.openResetPasswordModal();
+    this.modalService2.open(this.resetPasswordModal, { backdrop: 'static' });
   }
 
   appendAlert(message: string, type: string, option: number): void {
@@ -131,16 +135,18 @@ export class HeaderComponent implements OnInit {
       '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
       '</div>'
     ].join('');
-    if (option === 1) {
-      this.alertPlaceholder1.append(wrapper);
-    } else if (option === 2) {
-      this.alertPlaceholder2.append(wrapper);
+
+    if (option === 1 && this.alertPlaceholder1) {
+      this.alertPlaceholder1.nativeElement.append(wrapper);
+    } else if (option === 2 && this.alertPlaceholder2) {
+      this.alertPlaceholder2.nativeElement.append(wrapper);
     } else {
-      alert('ERROR! SOMETHING WENT WRONG!');
+      console.error("Something went wrong!!!!");
     }
   }
 
   logout(): void {
-    this.isLoggedIn = false;
+    this.authService.logout();
   }
+
 }

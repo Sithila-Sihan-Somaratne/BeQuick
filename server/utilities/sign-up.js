@@ -44,6 +44,10 @@ router.post('/sign-up', (req, res) => {
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
 
+    console.log("Register password: "+userPwd);
+    console.log("Encrypted above pwd: "+encryptedPwd);
+    
+    
     const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?)';
     const userValues = [userName, userEmail, userContact, userDOB, encryptedPwd, verificationPin, isVerified];
 

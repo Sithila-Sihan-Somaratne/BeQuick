@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import * as bcrypt from 'bcryptjs';
+import { AuthService } from '../../services/auth.service';
 
 interface LogInResponse {
   message: string;
@@ -22,10 +23,11 @@ export class LogInComponent implements OnInit{
   faLogIn = faRightFromBracket
   logInForm!: FormGroup;
   hide: boolean = true;
+  isLoggedIn : boolean = false;
   logInSuccess: boolean = false;
   alertPlaceholder!: HTMLDivElement;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder) { }
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.logInForm = this.fb.group({
@@ -50,7 +52,8 @@ export class LogInComponent implements OnInit{
         (response) => {
           const message = (response as LogInResponse).message;
           this.appendAlert(message, "success", 1);
-          this.logInSuccess = true;
+          this.isLoggedIn = true;
+          this.authService.login(); // Notify that login is successful
         },
         (error: HttpErrorResponse) => {
           this.appendAlert(error.error.message, "danger", 1)
@@ -60,7 +63,6 @@ export class LogInComponent implements OnInit{
           }
         }
       );
-
     }
   }
   appendAlert = (message: any, type: any, option: number): void => {

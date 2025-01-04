@@ -7,18 +7,24 @@
                     <li><a routerLink="/about" href="/about" class="nav-link px-2 link-light">About us</a></li>
                     <li><a routerLink="/contacts" href="/contacts" class="nav-link px-2 link-light">Contacts</a></li>
                     <li><a routerLink="/reviews" href="/reviews" class="nav-link px-2 link-light">Reviews</a></li>
-                    <li><a routerLink="/learn-more" href="/learn-more" class="nav-link px-2 link-light">Learn more about BeQuick</a></li>
+                    <li><a routerLink="/learn-more" href="/learn-more" class="nav-link px-2 link-light">Learn more about
+                            BeQuick</a></li>
                 </ul>
 
                 <div class="col-md-4 text-end justify-content-center" *ngIf="isLoggedIn">
                     <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-secondary" id="dropdownMenuButton" ngbDropdownToggle>Profile</button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                        <button class="btn btn-warning" id="dropdownMenuButton" ngbDropdownToggle>You()</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton" style="color: #fff;">
                             <button class="dropdown-item" routerLink="/profile">Profile</button>
                             <button class="dropdown-item" routerLink="/settings">Settings</button>
                             <button class="dropdown-item" (click)="logout()">Logout</button>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-4 text-end justify-content-center" *ngIf="!isLoggedIn">
+                    <button type="button" class="btn btn-warning"
+                        (click)="openMultiPurposeModal(multiPurposeModal)"><b>LOG IN/SIGN UP</b></button>
                 </div>
             </div>
         </nav>
@@ -38,7 +44,8 @@
                 <a ngbNavLink>Log In</a>
                 <ng-template ngbNavContent>
                     <app-log-in></app-log-in>
-                    <p align="center"><button class="btn btn-warning" (click)="openForgotPasswordModal()"><b>Forgot Password?</b></button></p>
+                    <p align="center"><button class="btn btn-warning"
+                            (click)="openForgotPasswordModal(forgotPasswordModal)"><b>Forgot Password?</b></button></p>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2">
@@ -61,15 +68,16 @@
     <div class="modal-body">
         <form [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword()">
             <div class="mb-3">
-                <label for="emailHeader" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="emailHeader" formControlName="email">
-                <div *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
+                <input type="email" class="form-control" id="forgotEmail" formControlName="email"
+                    placeholder="Enter email to reset password">
+                <div *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)"
+                    style="color: red; font-size: 15px; font-weight: 700;">
                     <div *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">Email is required.</div>
                     <div *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
                 </div>
             </div>
             <br>
-            <div id="liveAlertPlaceholder4"></div>
+            <div #liveAlertPlaceholder4></div>
             <br>
             <button type="submit" class="btn btn-warning"><b>Submit</b></button>
         </form>
@@ -83,42 +91,54 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+        <form [formGroup]="resetPasswordForm">
             <div class="mb-3">
-                <label for="token" class="form-label">Token</label>
-                <input type="input" class="form-control" id="token" formControlName="resetToken" placeholder="Token">
-                <div *ngIf="resetPasswordForm.get('token')?.invalid && (resetPasswordForm.get('token')?.dirty || resetPasswordForm.get('email')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
+                <input type="input" class="form-control" id="token" formControlName="resetToken"
+                    placeholder="Enter token to reset password">
+                <div *ngIf="resetPasswordForm.get('token')?.invalid && (resetPasswordForm.get('token')?.dirty || resetPasswordForm.get('email')?.touched)"
+                    style="color: red; font-size: 15px; font-weight: 700;">
                     <div *ngIf="resetPasswordForm.get('token')?.errors?.['required']">Token is required.</div>
                 </div>
             </div>
             <div class="form-floating">
-                <input [type]="hide ? 'password' : 'text'" class="form-control" id="floatingPassword1" placeholder="Password" formControlName="newPassword">
+                <input [type]="hide ? 'password' : 'text'" class="form-control" id="floatingPassword1"
+                    placeholder="Password" formControlName="newPassword">
                 <label for="floatingPassword1">Password</label>
             </div>
-            <div *ngIf="resetPasswordForm.get('newPassword')?.invalid && (resetPasswordForm.get('newPassword')?.dirty || resetPasswordForm.get('newPassword')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
+            <div *ngIf="resetPasswordForm.get('newPassword')?.invalid && (resetPasswordForm.get('newPassword')?.dirty || resetPasswordForm.get('newPassword')?.touched)"
+                style="color: red; font-size: 15px; font-weight: 700;">
                 <div *ngIf="resetPasswordForm.get('newPassword')?.errors?.['required']">Password is required.</div>
-                <div *ngIf="resetPasswordForm.get('newPassword')?.errors?.['minlength']">Password must be at least 8 characters long.</div>
-                <div *ngIf="resetPasswordForm.get('newPassword')?.errors?.['pattern']">Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.</div>
+                <div *ngIf="resetPasswordForm.get('newPassword')?.errors?.['minlength']">Password must be at least 8
+                    characters long.</div>
+                <div *ngIf="resetPasswordForm.get('newPassword')?.errors?.['pattern']">Password must contain at least
+                    one lowercase letter, one uppercase letter, one number, and one special character.</div>
             </div>
             <div class="form-floating">
-                <input [type]="hide ? 'password' : 'text'" class="form-control" id="floatingPassword2" placeholder="Password" formControlName="confirmPassword">
+                <input [type]="hide ? 'password' : 'text'" class="form-control" id="floatingPassword2"
+                    placeholder="Password" formControlName="confirmPassword">
                 <label for="floatingPassword2">Please enter password again</label>
             </div>
-            <div *ngIf="resetPasswordForm.get('confirmPassword')?.invalid && (resetPasswordForm.get('confirmPassword')?.dirty || resetPasswordForm.get('confirmPassword')?.touched)" style="color: red; font-size: 15px; font-weight: 700;">
-                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['required']">Repeat password is required.</div>
-                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['minlength']">Repeat password must be at least 8 characters long.</div>
-                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['pattern']">Repeat password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.</div>
+            <div *ngIf="resetPasswordForm.get('confirmPassword')?.invalid && (resetPasswordForm.get('confirmPassword')?.dirty || resetPasswordForm.get('confirmPassword')?.touched)"
+                style="color: red; font-size: 15px; font-weight: 700;">
+                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['required']">Repeat password is required.
+                </div>
+                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['minlength']">Repeat password must be at
+                    least 8 characters long.</div>
+                <div *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['pattern']">Repeat password must contain
+                    at least one lowercase letter, one uppercase letter, one number, and one special character.</div>
                 <br>
-                <div *ngIf="resetPasswordForm.errors?.['fieldsDoNotMatch']" style="color: red; font-size: 15px; font-weight: 700;">Password fields do not match.</div>
+                <div *ngIf="resetPasswordForm.errors?.['fieldsDoNotMatch']"
+                    style="color: red; font-size: 15px; font-weight: 700;">Password fields do not match.</div>
             </div>
             <div class="form-check text-start my-3">
                 <div class="form-check text-start my-3">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" (change)="hide = !hide">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2"
+                        (change)="hide = !hide">
                     <label class="form-check-label" for="flexCheckDefault2">Show password</label>
                 </div>
             </div>
             <br>
-            <div id="liveAlertPlaceholder5"></div>
+            <div #liveAlertPlaceholder5></div>
             <br>
             <button type="submit" class="btn btn-warning" (click)="resetPassword()"><b>Submit</b></button>
         </form>
