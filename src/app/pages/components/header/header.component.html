@@ -6,21 +6,16 @@
                     <li><a href="#" class="nav-link px-2 link-light"><b><u>BeQuick</u></b></a></li>
                     <li><a routerLink="/about" href="/about" class="nav-link px-2 link-light">About us</a></li>
                     <li><a routerLink="/contacts" href="/contacts" class="nav-link px-2 link-light">Contacts</a></li>
-                    <li><a routerLink="/reviews" href="/reviews" class="nav-link px-2 link-light">Reviews</a></li>
+                    <li *ngIf="isLoggedIn"><a routerLink="/reviews" href="/reviews"
+                            class="nav-link px-2 link-light">Reviews</a></li>
                     <li><a routerLink="/learn-more" href="/learn-more" class="nav-link px-2 link-light">Learn more about
                             BeQuick</a></li>
                 </ul>
 
                 <div class="col-md-4 text-end justify-content-center" *ngIf="isLoggedIn">
-                    <div ngbDropdown class="d-inline-block">
-                        <img [src]="userProfile.profileImage" alt="Profile Image" class="rounded-circle" width="30" height="30">
-                        <button class="btn btn-secondary" id="dropdownMenuButton" ngbDropdownToggle>Profile</button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item" routerLink="/profile">Profile</button>
-                            <button class="dropdown-item" routerLink="/settings">Settings</button>
-                            <button class="dropdown-item" (click)="logout()">Logout</button>
-                        </div>
-                    </div>
+                    <!-- Profile Image that triggers the offcanvas -->
+                    <img [src]="userProfile?.profileImage" alt="Profile Image" class="rounded-circle" width="30"
+                        height="30" (click)="openProfileOffcanvas(offcanvasProfile)">
                 </div>
 
                 <div class="col-md-4 text-end justify-content-center" *ngIf="!isLoggedIn">
@@ -30,6 +25,33 @@
             </div>
         </nav>
     </header>
+
+    <!-- Offcanvas Profile Menu -->
+    <ng-template #offcanvasProfile>
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasProfileLabel">Profile</h5>
+            <button type="button" class="btn-close text-reset" aria-label="Close"
+                (click)="closeProfileOffcanvas()"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Profile Information Section -->
+            <div class="d-flex align-items-center mb-3">
+                <img [src]="userProfile?.profileImage" alt="Profile Image" class="rounded-circle me-2" width="50"
+                    height="50">
+                <div>
+                    <h6>{{ userProfile?.name }}</h6>
+                    <p class="mb-0">{{ userProfile?.email }}</p> <!-- Add email if available -->
+                    <p class="mb-0">{{ userProfile?.contactNumber }}</p> <!-- Add contact number if available -->
+                    <p class="mb-0">{{ userProfile?.dateOfBirth }}</p> <!-- Add date of birth if available -->
+                </div>
+            </div>
+            <hr>
+            <!-- Settings and Logout Section -->
+            <button class="dropdown-item" routerLink="/profile">Profile</button>
+            <button class="dropdown-item" routerLink="/settings">Settings</button>
+            <button class="dropdown-item" (click)="logout()">Logout</button>
+        </div>
+    </ng-template>
 </div>
 
 <!-- Multi-purpose Modal -->

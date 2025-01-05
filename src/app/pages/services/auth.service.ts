@@ -5,23 +5,27 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>(false);
-  private userName = new BehaviorSubject<string | null>(null);
+  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  isLoggedIn = this.loggedIn.asObservable();
 
-  isLoggedIn: Observable<boolean> = this.loggedIn.asObservable();
-  currentUserName: Observable<string | null> = this.userName.asObservable();
+  constructor() {}
 
-  login(userName: string): void {
-    this.userName.next(userName);
+  private hasToken(): boolean {
+    return !!localStorage.getItem('authToken');
+  }
+
+  login(token: string): void {
+    localStorage.setItem('authToken', token);
     this.loggedIn.next(true);
   }
 
   logout(): void {
-    this.userName.next(null);
+    localStorage.removeItem('authToken');
     this.loggedIn.next(false);
   }
 
   getUserName(): string | null {
-    return this.userName.getValue();
+    // Retrieve the username from the token or another method
+    return localStorage.getItem('userName');
   }
 }

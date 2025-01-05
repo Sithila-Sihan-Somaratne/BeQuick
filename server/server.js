@@ -4,22 +4,18 @@ const express = require('express');
 const cors = require('cors');
 const signUp = require('./utilities/routes/sign-up');
 const logIn = require("./utilities/routes/log-in");
-const profileRoute = require("./utilities/routes/profiles"); 
-const bodyParser = require('body-parser');
+const profileRoute = require("./utilities/routes/profiles");
 
-console.log(process.env) // remove this after you've confirmed it is working
-
-//Creating an Express application
+// Creating an Express application
 const app = express();
 
-//Use CORS
+// Use CORS
 app.use(cors());
 
 // Middleware to parse JSON data
-app.use(express.json());
-app.use(bodyParser.json()); 
+app.use(express.json()); 
 
-//Routes
+// Routes
 app.use('', signUp);
 app.use('', logIn);
 app.use('/profile', profileRoute); 

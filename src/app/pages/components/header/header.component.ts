@@ -1,11 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { SignUpComponent } from '../sign-up/sign-up.component';
 import { LogInComponent } from '../log-in/log-in.component';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
 import { CommonModule } from '@angular/common';
-import { NgbModal, NgbNavModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbNavModule, NgbDropdownModule, NgbOffcanvas, NgbOffcanvasRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 
@@ -17,9 +17,17 @@ interface PurposeResponse {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, SignUpComponent, LogInComponent, ReactiveFormsModule, HttpClientModule, NgbNavModule, NgbDropdownModule],
+  imports: [
+    CommonModule,
+    SignUpComponent,
+    LogInComponent,
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgbNavModule,
+    NgbDropdownModule,
+  ],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('resetPasswordModal') resetPasswordModal: any;
@@ -31,27 +39,30 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   active: number = 1;
   userProfile: any = {};
+  @ViewChild('offcanvasProfile') offcanvasProfileTemplate!: TemplateRef<any>;
+  offcanvasRef: NgbOffcanvasRef | undefined;
 
   constructor(
     private httpClient: HttpClient,
     private fb: FormBuilder,
     private modalService1: NgbModal,
     private modalService2: NgbModal,
+    private offcanvasService: NgbOffcanvas,
     private authService: AuthService,
-    private profileService: ProfileService // Inject ProfileService
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
     this.resetPasswordForm = this.fb.group({
       resetToken: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
     }, { validators: this.fieldsMatchValidator('newPassword', 'confirmPassword') });
 
-    this.authService.isLoggedIn.subscribe(loggedIn => {
+    this.authService.isLoggedIn.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
       if (this.isLoggedIn) {
         this.loadUserProfile();
@@ -65,8 +76,12 @@ export class HeaderComponent implements OnInit {
       this.profileService.getUserProfile(userName).subscribe(
         (data: any) => {
           this.userProfile = data;
+          // Format the date of birth for display
+          if (this.userProfile.dateOfBirth) {
+            this.userProfile.dateOfBirth = new Date(this.userProfile.dateOfBirth).toLocaleDateString();
+          }
         },
-        error => {
+        (error) => {
           console.error('Error fetching user profile:', error);
         }
       );
@@ -154,7 +169,7 @@ export class HeaderComponent implements OnInit {
       `<div class="alert alert-${type} alert-dismissible" role="alert">`,
       `   <div><i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'x-circle-fill'}"></i> ${message}</div>`,
       '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-      '</div>'
+      '</div>',
     ].join('');
 
     if (option === 1 && this.alertPlaceholder1) {
@@ -162,11 +177,22 @@ export class HeaderComponent implements OnInit {
     } else if (option === 2 && this.alertPlaceholder2) {
       this.alertPlaceholder2.nativeElement.append(wrapper);
     } else {
-      console.error("Something went wrong!!!!");
+      console.error('Something went wrong!!!!');
+    }
+  }
+
+  openProfileOffcanvas(content: TemplateRef<any>) {
+    this.offcanvasRef = this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvasProfileLabel', position: 'end' });
+  }
+
+  closeProfileOffcanvas() {
+    if (this.offcanvasRef) {
+      this.offcanvasRef.close();
     }
   }
 
   logout(): void {
     this.authService.logout();
+    this.closeProfileOffcanvas();
   }
 }

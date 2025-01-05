@@ -34,12 +34,11 @@ function encryptPassword(password) {
     return hash;
 }
 
-// Copy default profile image to user-specific location
 function copyDefaultProfileImage(userName) {
     const srcPath = path.join(__dirname, '..', 'images', 'user__default.png');
     const destPath = path.join(__dirname, '..', 'images', `${userName}.png`);
     fs.copyFileSync(srcPath, destPath);
-    return `/utilities/images/${userName}.png`;
+    return `${userName}.png`; // Return only the image file name
 }
 
 // Sign-up endpoint

@@ -9,8 +9,7 @@ import { LearnMoreComponent } from './pages/components/learn-more/learn-more.com
 import { StarRatingComponent } from './pages/components/reviews/star-rating/star-rating.component';
 import { SignUpComponent } from './pages/components/sign-up/sign-up.component';
 import { LogInComponent } from './pages/components/log-in/log-in.component';
-
-
+import { AuthService } from './pages/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,4 +20,11 @@ import { LogInComponent } from './pages/components/log-in/log-in.component';
 })
 export class AppComponent {
   title = 'BeQuick';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // This will trigger the hasToken() method and set the initial login state
+    this.authService.isLoggedIn.subscribe();
+  }
 }

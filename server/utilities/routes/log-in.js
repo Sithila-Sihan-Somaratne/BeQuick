@@ -1,12 +1,10 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const connection = require('../db/connection');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
-router.use(bodyParser.json()); 
 
 // Environment variables should be used here
 const emailUser = process.env.EMAIL_USER;

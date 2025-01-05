@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Fetch user profile
-router.get('/profile/:userName', (req, res) => {
+router.get('/:userName', (req, res) => {
     const { userName } = req.params;
     console.log(`Fetching profile for user: ${userName}`);
 
@@ -16,7 +16,7 @@ router.get('/profile/:userName', (req, res) => {
             return res.status(500).json({ error: 'Error while fetching user profile' });
         } else if (results.length > 0) {
             const userProfile = results[0];
-            const imagePath = path.join(__dirname, '..', 'utilities', 'images', userProfile.profileImage);
+            const imagePath = path.join(__dirname, '..', 'images', userProfile.profileImage); // Correct the image path
             console.log(`Reading image from path: ${imagePath}`);
 
             fs.readFile(imagePath, (err, data) => {
