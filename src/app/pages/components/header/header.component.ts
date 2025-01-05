@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbNavModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../services/profile.service';
 
 interface PurposeResponse {
   message: string;
@@ -36,9 +37,10 @@ export class HeaderComponent implements OnInit {
     private fb: FormBuilder,
     private modalService1: NgbModal,
     private modalService2: NgbModal,
-    private authService: AuthService 
+    private authService: AuthService,
+    private profileService: ProfileService // Inject ProfileService
   ) {}
-  
+
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -48,6 +50,7 @@ export class HeaderComponent implements OnInit {
       newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]]
     }, { validators: this.fieldsMatchValidator('newPassword', 'confirmPassword') });
+
     this.authService.isLoggedIn.subscribe(loggedIn => {
       this.isLoggedIn = loggedIn;
       if (this.isLoggedIn) {
@@ -57,15 +60,17 @@ export class HeaderComponent implements OnInit {
   }
 
   loadUserProfile(): void {
-    const userName = 'exampleUserName'; // Replace with logic to get the logged-in user's name
-    this.httpClient.get(`/profile/${userName}`).subscribe(
-      (data: any) => {
-        this.userProfile = data;
-      },
-      error => {
-        console.error('Error fetching user profile:', error);
-      }
-    );
+    const userName = this.authService.getUserName(); // Get the logged-in user's name
+    if (userName) {
+      this.profileService.getUserProfile(userName).subscribe(
+        (data: any) => {
+          this.userProfile = data;
+        },
+        error => {
+          console.error('Error fetching user profile:', error);
+        }
+      );
+    }
   }
 
   passwordStrengthValidator(): ValidatorFn {
@@ -164,5 +169,4 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.authService.logout();
   }
-
 }

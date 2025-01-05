@@ -1,10 +1,11 @@
-"use strict"
 const express = require('express');
 const router = express.Router();
-const connection = require('./db/connection');
+const connection = require('../db/connection');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 
 // Environment variables should be used here
 const emailUser = process.env.EMAIL_USER;
@@ -26,11 +27,19 @@ const transporter = nodemailer.createTransport({
 });
 
 //Encrypt password method
-function encryptPassword (password) {
+function encryptPassword(password) {
     const saltRounds = 12;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
     return hash;
+}
+
+// Copy default profile image to user-specific location
+function copyDefaultProfileImage(userName) {
+    const srcPath = path.join(__dirname, '..', 'images', 'user__default.png');
+    const destPath = path.join(__dirname, '..', 'images', `${userName}.png`);
+    fs.copyFileSync(srcPath, destPath);
+    return `/utilities/images/${userName}.png`;
 }
 
 // Sign-up endpoint
@@ -43,7 +52,7 @@ router.post('/sign-up', (req, res) => {
     const encryptedPwd = encryptPassword(userPwd);
     const verificationPin = crypto.randomInt(100000, 1000000).toString();
     const isVerified = 0;
-    const defaultProfileImage = 'default_profile_image_url.jpg'; // Replace with actual URL
+    const defaultProfileImage = copyDefaultProfileImage(userName); // Copy default image and get path
 
     const sql = 'INSERT INTO users (name, email, contactNumber, dob, pwd, verificationPin, isVerified, profileImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const userValues = [userName, userEmail, userContact, userDOB, encryptedPwd, verificationPin, isVerified, defaultProfileImage];
@@ -66,7 +75,7 @@ router.post('/sign-up', (req, res) => {
 
 // Verify PIN
 router.post('/verify-pin', (req, res) => {
-    const { userName ,verificationPin } = req.body;
+    const { userName , verificationPin } = req.body;
     const sql = 'SELECT * FROM users WHERE name = ? AND verificationPin = ?';
     connection.query(sql, [userName, verificationPin], (err, results) => {
         console.log(sql, userName, verificationPin);

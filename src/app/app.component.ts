@@ -11,6 +11,7 @@ import { SignUpComponent } from './pages/components/sign-up/sign-up.component';
 import { LogInComponent } from './pages/components/log-in/log-in.component';
 
 
+
 @Component({
   selector: 'app-root',
   standalone: true,

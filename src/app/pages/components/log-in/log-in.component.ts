@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../services/profile.service';
 
 interface LogInResponse {
   message: string;
@@ -26,8 +27,9 @@ export class LogInComponent implements OnInit {
   isLoggedIn: boolean = false;
   logInSuccess: boolean = false;
   alertPlaceholder!: HTMLDivElement;
+  userProfile: any;
 
-  constructor(private httpClient: HttpClient, private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private httpClient: HttpClient, private fb: FormBuilder, private authService: AuthService, private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.logInForm = this.fb.group({
@@ -59,7 +61,8 @@ export class LogInComponent implements OnInit {
           const message = (response as LogInResponse).message;
           this.appendAlert(message, "success", 1);
           this.isLoggedIn = true;
-          this.authService.login(); // Notify that login is successful
+          this.authService.login(formData.loginInput); 
+          this.getUserProfile(formData.loginInput);
         },
         (error: HttpErrorResponse) => {
           console.error('Error object:', error); // Log the entire error object for debugging
@@ -73,6 +76,17 @@ export class LogInComponent implements OnInit {
         }
       );
     }
+  }
+
+  getUserProfile(userName: string): void {
+    this.profileService.getUserProfile(userName).subscribe(
+      (data) => {
+        this.userProfile = data;
+      },
+      (error) => {
+        console.error('Error fetching user profile:', error);
+      }
+    );
   }
 
   appendAlert = (message: any, type: any, option: number): void => {

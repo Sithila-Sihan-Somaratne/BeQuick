@@ -13,8 +13,7 @@
 
                 <div class="col-md-4 text-end justify-content-center" *ngIf="isLoggedIn">
                     <div ngbDropdown class="d-inline-block">
-                        <img [src]="userProfile.profileImage" alt="Profile Image" class="rounded-circle" width="30"
-                            height="30">
+                        <img [src]="userProfile.profileImage" alt="Profile Image" class="rounded-circle" width="30" height="30">
                         <button class="btn btn-secondary" id="dropdownMenuButton" ngbDropdownToggle>Profile</button>
                         <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
                             <button class="dropdown-item" routerLink="/profile">Profile</button>
