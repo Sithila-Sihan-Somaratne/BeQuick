@@ -65,6 +65,8 @@ export class HeaderComponent implements OnInit {
     this.authService.isLoggedIn.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
       if (this.isLoggedIn) {
+        console.log("Yeahh!!");
+        
         this.loadUserProfile();
       }
     });
@@ -72,14 +74,13 @@ export class HeaderComponent implements OnInit {
 
   loadUserProfile(): void {
     const userName = this.authService.getUserName(); // Get the logged-in user's name
+    console.log(userName);
+    
     if (userName) {
       this.profileService.getUserProfile(userName).subscribe(
         (data: any) => {
           this.userProfile = data;
-          // Format the date of birth for display
-          if (this.userProfile.dateOfBirth) {
-            this.userProfile.dateOfBirth = new Date(this.userProfile.dateOfBirth).toLocaleDateString();
-          }
+          console.log(this.userProfile);
         },
         (error) => {
           console.error('Error fetching user profile:', error);

@@ -2,6 +2,7 @@
     <header id="header">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #1d1987; padding: 5px;">
             <div class="container-fluid">
+                <!-- Use flex-column for small screens to stack items vertically -->
                 <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 link-light"><b><u>BeQuick</u></b></a></li>
                     <li><a routerLink="/about" href="/about" class="nav-link px-2 link-light">About us</a></li>
@@ -12,15 +13,17 @@
                             BeQuick</a></li>
                 </ul>
 
-                <div class="col-md-4 text-end justify-content-center" *ngIf="isLoggedIn">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
                     <!-- Profile Image that triggers the offcanvas -->
-                    <img [src]="userProfile?.profileImage" alt="Profile Image" class="rounded-circle" width="30"
-                        height="30" (click)="openProfileOffcanvas(offcanvasProfile)">
-                </div>
+                    <div *ngIf="isLoggedIn" class="mb-2 mb-md-0">
+                        <img [src]="userProfile?.profileImage" alt="Profile Image" class="rounded-circle" width="30"
+                            height="30" (click)="openProfileOffcanvas(offcanvasProfile)">
+                    </div>
 
-                <div class="col-md-4 text-end justify-content-center" *ngIf="!isLoggedIn">
-                    <button type="button" class="btn btn-warning"
-                        (click)="openMultiPurposeModal(multiPurposeModal)"><b>LOG IN/SIGN UP</b></button>
+                    <div *ngIf="!isLoggedIn">
+                        <button type="button" class="btn btn-warning"
+                            (click)="openMultiPurposeModal(multiPurposeModal)"><b>LOG IN/SIGN UP</b></button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -42,7 +45,7 @@
                     <h6>{{ userProfile?.name }}</h6>
                     <p class="mb-0">{{ userProfile?.email }}</p> <!-- Add email if available -->
                     <p class="mb-0">{{ userProfile?.contactNumber }}</p> <!-- Add contact number if available -->
-                    <p class="mb-0">{{ userProfile?.dateOfBirth }}</p> <!-- Add date of birth if available -->
+                    <p class="mb-0">{{ userProfile?.dob }}</p> <!-- Add date of birth if available -->
                 </div>
             </div>
             <hr>
